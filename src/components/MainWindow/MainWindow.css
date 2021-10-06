@@ -1,0 +1,367 @@
+/* 
+    TODO there is a reasonable amount of duplication here
+    e.g. tree-container, list-container, sort-container
+*/
+
+.main-window {
+  grid-area: main;
+  background-color: red;
+  display: grid;
+
+  grid-template-areas:
+  " . . . "
+  " . sort-container . "
+  " . . . ";
+  grid-template-columns: auto 90% auto;
+  grid-template-rows: auto 90% auto;
+}
+
+.sort-container {
+  grid-area: sort-container;
+
+  width: 100%;
+  height: 100%;
+  background-color: lightcyan;
+
+  display: grid;
+  grid-template-areas:
+  " .         .            ."
+  " . array-view-container . "
+  " .         .            . "
+  " .    sort-button       . "
+  " .         .            . ";
+  grid-template-columns: auto 90% auto;
+  grid-template-rows: 5% auto 5% 10% 5%;
+}
+
+.array-view-container {
+  grid-area: array-view-container;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.cont {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+}
+
+.thingy {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  /*
+  border-width: 2px;
+  border-color: black;
+  border-style: solid;
+  */
+  /*justify-content: flex-start;*/
+}
+
+.sort-button {
+  grid-area: sort-button;
+}
+
+/* ------------------------------------------------------------ */
+
+.tree-container {
+  grid-area: sort-container;
+
+  width: 100%;
+  height: 100%;
+  background-color: lightcyan;
+
+  display: grid;
+  grid-template-areas:
+  " .        .       . "
+  " . node-container . "
+  " .        .       . "
+  " .   sort-button  . "
+  " .        .       . ";
+  grid-template-columns: 5% auto 5%;
+  grid-template-rows: 5% auto 5% 10% 5%;
+}
+
+.binary-tree-view-container{
+  grid-area: node-container;
+  width: 100%;
+  height: 100%;
+
+  background-color: red;
+
+  position: relative;
+}
+
+.node{
+  grid-area: val;
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  /*position: relative;*/
+
+  width: 100%;
+  height: 100%;
+  background-color: aquamarine;
+}
+
+.node-container{
+  position: relative;
+  width: 50px;
+  height: 50px;
+}
+
+.left-child-node{
+  grid-area: left-child;
+  display: flex;
+
+  /* border-style: solid; */
+
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 100%;
+  /* background-color: red; */
+}
+
+.right-child-node{
+  grid-area: right-child;
+  display: flex;
+
+  /* border-style: solid; */
+
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 100%;
+  /* background-color: blue; */
+}
+
+.line-container {
+  /*background-color: green;*/
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0%;
+  left: 0%
+}
+
+.svg-line {
+  stroke: black;
+  stroke-width: 4px;
+}
+
+.node-circle {
+  position: absolute;
+  
+  top: 0px;/*50%;*/
+  left: 0px;/*50%;*/
+
+  width: 100%;
+  height: 100%;
+
+  z-index: 1;
+}
+
+.default-circle {
+  stroke: rgb(173, 0, 130); /* outer color of circle*/
+  fill: rgb(204, 204, 204); /* inner color of circle */
+}
+
+.red-circle {
+  stroke: rgb(173, 0, 130); /* outer color of circle*/
+  fill: rgb(255, 115, 115); /* inner color of circle */
+}
+
+.blue-circle {
+  stroke: rgb(173, 0, 130); /* outer color of circle*/
+  fill: rgb(100, 115, 255); /* inner color of circle */
+}
+
+.green-circle {
+  stroke: rgb(173, 0, 130); /* outer color of circle*/
+  fill: rgb(72, 255, 87); /* inner color of circle */
+}
+
+.dark-blue-circle {
+  stroke: rgb(173, 0, 130); /* outer color of circle*/
+  fill: rgb(0, 25, 250); /* inner color of circle */
+}
+
+.val-container {
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button-container {
+  grid-area: sort-button;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: brown;
+}
+
+/* ------------------------------------------------------------ */
+
+.button-container > button {
+  width: 100%;
+  height: 100%;
+}
+
+/* ------------------------------------------------------------ */
+.func-context-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.text-input-button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.text-input-button-container > textarea {
+  resize: none;
+}
+
+/* ------------------------------------------------------------ */
+/*
+.list-container {
+  width: 100%;
+  height: 100%;
+
+  grid-area: sort-container;
+
+  display: grid;
+  grid-template-areas:
+  " .        .       . "
+  " . list . "
+  " .        .       . "
+  " .   sort-button  . "
+  " .        .       . ";
+  grid-template-columns: 5% auto 5%;
+  grid-template-rows: 5% auto 5% 10% 5%;
+
+  background-color: aliceblue;
+}
+*/
+/*
+.linked-list {
+  grid-area: list;
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  height: 100%;
+  background-color: green;
+  position: relative;
+}
+*/
+
+.linked-list {
+  grid-area: node-container;
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  height: 100%;
+  background-color: green;
+  position: relative;
+}
+
+.linked-list > .list-node-container {
+  background-color: blanchedalmond;
+  width: 100%;
+  height: 100%;
+  border-style: solid;
+  border-color: black;
+  /*position: relative;*/
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+#z-test{
+  z-index: 999;
+}
+
+.list-node {
+  background-color: grey;
+  border-style: solid;
+  border-color: black;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+}
+
+.val-box {
+  width: 100%;
+  height: 100%;
+  border-style: solid;
+
+}
+
+.line-box {
+  width: 100%;
+  height: 100%;
+}
+
+.default-list-node {
+  background-color: grey;
+}
+
+.red-list-node {
+  background-color: red;
+}
+
+.blue-list-node {
+  background-color: blue;
+}
+
+.green-list-node {
+  background-color: green;
+}
+
+/* ------------------------------------------------------------ */
+
+
+.graph-view-container {
+  grid-area: node-container;
+  background-color: green;
+  /*position: relative;*/
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.graph-view{
+  width: 80%;
+  height: 80%;
+  position: relative;
+  background-color: greenyellow;
+}
+
+.vertex{
+  /*
+  width: 100%;
+  height: 100%;
+  */
+  position: absolute;
+}
+
+/* ------------------------------------------------------------ */

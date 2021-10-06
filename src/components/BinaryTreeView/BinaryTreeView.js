@@ -1,0 +1,150 @@
+import React, { useEffect, useState } from 'react';
+import Node from '../Node/Node';
+import Line from '../Line/Line';
+import {Edge} from '../Graph/GraphContainer/GraphContainer';
+import {LineList} from '../GraphView/GraphView';
+import {generate_vertex_list, get_normalized_coords_to_screenspace_coords} from '../../GenerateVertices';
+
+function in_order_populate_node_list(root, node_list)
+{
+  if(!root) return;
+  in_order_populate_node_list(root.left, node_list);
+  node_list.push(root.val);
+  in_order_populate_node_list(root.right, node_list);
+}
+
+function in_order_populate_node_coords(root, curr_depth, curr_horizontal_pos, max_depth, normalized_node_coords_map)
+{
+  if(!root) return;
+  in_order_populate_node_coords(root.left, curr_depth+1, curr_horizontal_pos*2, max_depth, normalized_node_coords_map);
+  const nodes_on_curr_depth = Math.pow(2, curr_depth);
+  const x_level_count = nodes_on_curr_depth+1;
+  const x = (1/x_level_count) * (curr_horizontal_pos+1);
+  const y_level_count = max_depth+2;  // max_deoth+1 is the number of depth levels to the tree, the extra +1 is so the last level is left empty
+  const y = (1/y_level_count) * (curr_depth+1); // curr_depth+1 since curr_depth=0 is the first level, curr_depth=1 is the 2nd level etc
+  normalized_node_coords_map[root.val] = {x: x, y: y};
+  in_order_populate_node_coords(root.right, curr_depth+1, curr_horizontal_pos*2+1, max_depth, normalized_node_coords_map);
+}
+
+// TODO figure out how to select tree nodes for highlighting (I think assign a key(integer identifier) to each node for rendering code to check, then make variables/lists of the keys you want to highlight)
+// TODO move this to its' own file
+// TODO potentially come up with different names than red_node, blue_node, green_node etc.
+// -----
+// base cases:
+//  2nd last GUI row
+//  3rd last GUI row
+// (will need to keep track of GUI rows outside of this func)
+// (number of GUI rows will be based on max depth of tree)
+// (the GUI node containers are rigid and will always act like it has a full tree of max depth of the tree)
+// (in order to make this easy, the Tree should keep track of its' max depth, and update this on insertions, deletions and rotations)
+// only render child node if it exists (treat each side separately)
+// only draw line if there is child node (treat each side separately)
+// you will have to create an empty div with no value or svg line if the child doesn't exist
+// if you don't make an empty grid it will break the GUI layout
+// -----
+// container (note this is slightly different depending on if 2nd last node or not)
+//  parent node value
+//  left child (recursive)
+//  right child(recursive)
+//  svg line for left child
+//  svg line for right child
+function BinaryTreeView(props)
+{
+  console.log(props.context);
+  // TODO this circle_class code is duplicated in GraphView
+  // TODO there must be a better way to design this instead of checking against each node...
+
+  // TODO this is completely duplicated from GraphView.js
+  let [width, setWidth] = useState(0);
+  let [height, setHeight] = useState(0);
+  let [nodeWidth, setNodeWidth] = useState(0);
+  useEffect(() => {
+    console.log('UPDATED');
+    const el = document.getElementsByClassName('tree-container')[0];
+    const node_el = document.getElementsByClassName('node-container')[0];
+    setWidth(el.clientWidth);
+    setHeight(el.clientHeight);
+    setNodeWidth(node_el.clientWidth);
+    window.onresize = () => {
+      const el = document.getElementsByClassName('binary-tree-view-container')[0];
+      let width = el.clientWidth;
+      let height = el.clientHeight;
+      console.log(`${width}, ${height}`);
+      setWidth(el.clientWidth);
+      setHeight(el.clientHeight);
+    };
+  });
+
+  let node_list = [];
+  in_order_populate_node_list(props.tree.head, node_list)
+
+  // TODO code re-use with GraphView by passing function to shared code in GenerateVertices
+  let normalized_node_coords_map = {};
+  in_order_populate_node_coords(props.tree.head, 0, 0, props.tree.max_depth, normalized_node_coords_map)
+
+  console.log('YUP');
+  console.log(node_list);
+  console.log(normalized_node_coords_map);
+  let node_screenspace_coords_list = get_normalized_coords_to_screenspace_coords(node_list, normalized_node_coords_map);
+  console.log(node_screenspace_coords_list);
+  let node_el_list = generate_vertex_list(node_list, node_screenspace_coords_list, props.context, width);
+
+  let edge_list = [];
+  generate_edge_list_for_binary_tree(props.tree.head, edge_list);
+
+  console.log('EDGE LIST TREE');
+  console.log(edge_list);
+
+  return (
+    <div className='binary-tree-view-container'>
+      {node_el_list.map((el) => el)}
+      <LineList vertexScreenspaceCoordsList={node_screenspace_coords_list} edgeList={edge_list} containerWidth={width} containerHeight={height} nodeWidth={nodeWidth}/>
+    </div>
+  );
+}
+
+function generate_edge_list_for_binary_tree(root, edge_list)
+{
+  if(!root) return;
+  if(root.left)
+  {
+    let edge = new Edge(root.val, root.left.val)
+    edge_list.push(edge);
+    generate_edge_list_for_binary_tree(root.left, edge_list)
+  }
+
+  if(root.right)
+  {
+    let edge = new Edge(root.val, root.right.val)
+    edge_list.push(edge);
+    generate_edge_list_for_binary_tree(root.right, edge_list)
+  }
+}
+
+// TODO this is completely duplicated from GraphView.js
+function Vertex(props)
+{
+  let pos_obj = 
+  {
+    left: props.left,
+    top: props.top
+  };
+  return (
+    <div class='vertex' style={pos_obj}>
+      <Node circleClass={props.circleClass} centerX={'50%'} centerY={'50%'} nodeValue={props.children}/>
+    </div>
+  );
+}
+// TODO this is duplicated from GraphView.js
+function vertex_point_center(point, container_width_pixels, node_width_pixels)
+{
+  let left_offset = node_width_pixels / 2 / container_width_pixels;
+  let left_offset_as_percentage = left_offset*100;
+  let p = {
+    x: point.x - left_offset_as_percentage,
+    y: point.y 
+  }
+  return p;
+}
+
+export default BinaryTreeView;
