@@ -55,9 +55,7 @@ class TextInputButton2 extends React.Component
 
   render()
   {
-    let is_disabled = false;
-    if(!this.props.inputValidatorFunc(this.state.translated_button_value)) // TODO make this give some visible feedback
-      is_disabled = true;
+    let is_disabled = !this.props.inputValidatorFunc(this.state.translated_button_value);
 
     let func_context_button = (
         <FuncContextButton
