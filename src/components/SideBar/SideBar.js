@@ -4,7 +4,7 @@ import QuickSortContainer from '../Sort/QuickSortContainer/QuickSortContainer';
 import RadixSortContainer from '../Sort/RadixSortContainer/RadixSortContainer.js';
 import LinearSearchContainer from '../Search/LinearSearchContainer/LinearSearchContainer';
 import BinarySearchContainer from '../Search/BinarySearchContainer/BinarySearchContainer';
-import TestTree from '../Tree/BinarySearchTree/BinarySearchTree.js';
+import BinarySearchTree from '../Tree/BinarySearchTree/BinarySearchTree.js';
 import LinkedListContainer from '../List/LinkedList/LinkedListContainer';
 import HeapContainer from '../Heap/HeapContainer/HeapContainer';
 import {GraphContainer} from '../Graph/GraphContainer/GraphContainer';
@@ -63,9 +63,9 @@ function SideBar(props)
     },
 
     {
-      componentToLink: <TestTree/>,
-      key: 'test-tree',
-      text: 'Test Tree'
+      componentToLink: <BinarySearchTree/>,
+      key: 'binary-search-tree',
+      text: 'Binary Search Tree'
     },
 
     {

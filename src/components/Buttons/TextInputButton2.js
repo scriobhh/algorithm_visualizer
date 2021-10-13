@@ -58,14 +58,14 @@ class TextInputButton2 extends React.Component
     let is_disabled = !this.props.inputValidatorFunc(this.state.translated_button_value);
 
     let func_context_button = (
-        <FuncContextButton
-          coroutineStepArg={this.state.translated_button_value}
-          updateContainerCallback={this.props.updateContainerCallback}
-          assignedFunction={this.props.assignedFunction}
-          functionContext={this.props.functionContext}
-          isDisabled={is_disabled}>
-          { this.props.children }
-        </FuncContextButton>);
+      <FuncContextButton
+        coroutineStepArg={this.state.translated_button_value}
+        updateContainerCallback={this.props.updateContainerCallback}
+        assignedFunction={this.props.assignedFunction}
+        functionContext={this.props.functionContext}
+        isDisabled={is_disabled}>
+        { this.props.children }
+      </FuncContextButton>);
 
     let text_area_component = <textarea rows="1" cols="3" maxlength="3" value={this.state.translated_button_value} onChange={this.update_value} />
     return (

@@ -14,6 +14,7 @@ function* search_binary_tree(root, search_val)
   if(!root)
   {
     yield { blue_node_set: new Set(''), node: null};
+    return;
   }
 
   yield { blue_node_set: new Set([root.val]), node: root};
@@ -24,12 +25,14 @@ function* search_binary_tree(root, search_val)
   }
   else if(search_val < root.val)
   {
+    if(!root.left) return;
     let it = search_binary_tree(root.left, search_val);
     let ob = it.next();
     while(!ob.done) { yield ob.value; ob = it.next(); }
   }
   else  // if(search_val > root.val)
   {
+    if(!root.right) return;
     let it = search_binary_tree(root.right, search_val);
     let ob = it.next();
     while(!ob.done) { yield ob.value; ob = it.next(); }
@@ -105,8 +108,9 @@ function* remove(val, tree)
   let ret = ob;
   while(!ob.done) { yield ob.value; ret = ob; ob = it.next(); }
   // ----
+  if(!ret.value.red_node_set) return;
   let node_to_remove = ret.value.node;
-  if(!node_to_remove) return null;
+  //if(!node_to_remove) return null;
 
   let node_par = node_to_remove.parent;
 
@@ -253,7 +257,7 @@ function* left_rotate(tree, root)
   yield {blue_node_set: new Set([root.val]), green_node_set: new Set([C.val]), red_node_set: new Set([root.left.val])};
 }
 
-class TestTree extends React.Component
+class BinarySearchTree extends React.Component
 {
   constructor(props)
   {
@@ -322,24 +326,27 @@ class TestTree extends React.Component
   {
     const button_el_arr =
     [
-      <TextInputButton2 initialValue={5} updateContainerCallback={this.update_func_context} 
+      <TextInputButton2 initialValue={5}
+                        updateContainerCallback={this.update_func_context} 
                         assignedFunction={this.search_wrapper_func} 
                         functionContext={this.state.func_context} 
-                        inputTranslationFunc={(button_val) => parseInt(button_val)} 
+                        inputTranslationFunc={button_input_translator}
                         inputValidatorFunc={(val) => typeof val == 'number'}>
         SEARCH
       </TextInputButton2>,
-      <TextInputButton2 initialValue={5} updateContainerCallback={this.update_func_context} 
+      <TextInputButton2 initialValue={5}
+                        updateContainerCallback={this.update_func_context} 
                         assignedFunction={this.insert_wrapper_func} 
                         functionContext={this.state.func_context} 
-                        inputTranslationFunc={(button_val) => parseInt(button_val)} 
+                        inputTranslationFunc={button_input_translator} 
                         inputValidatorFunc={(val) => typeof val == 'number'}>
         INSERT
       </TextInputButton2>,
-      <TextInputButton2 initialValue={5} updateContainerCallback={this.update_func_context} 
+      <TextInputButton2 initialValue={5}
+                        updateContainerCallback={this.update_func_context} 
                         assignedFunction={this.remove_wrapper_func} 
                         functionContext={this.state.func_context} 
-                        inputTranslationFunc={(button_val) => parseInt(button_val)} 
+                        inputTranslationFunc={button_input_translator} 
                         inputValidatorFunc={(val) => typeof val == 'number'}>
         REMOVE
       </TextInputButton2>,
@@ -352,8 +359,8 @@ class TestTree extends React.Component
     );
   }
 }
-
-export default TestTree;
+let button_input_translator = (button_val) => button_val == '' ? '' : parseInt(button_val);
+export default BinarySearchTree;
 
 // TODO cleanup this file big time..........
 // TODO rename to Binary Search Tree 
