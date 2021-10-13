@@ -94,7 +94,8 @@ function* next_in_order(root)
   yield {red_node_set: new Set([min_node.val]), node: min_node};
 }
 
-// TODO crashs if you keep clicking remove on a node that doesn;t exist
+// TODO this performs a 2nd unecessary search of the tree on removals
+// for nodes with 2 children
 function* remove(val, tree)
 {
   // ----

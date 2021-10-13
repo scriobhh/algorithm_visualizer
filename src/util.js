@@ -32,39 +32,12 @@ function array_of_indexes(start, end)
   return index_arr;
 }
 
-/*
-class binary_tree_node
+function get_arr_index_of_val(arr, search_val)
 {
-  constructor(val = null)
-  {
-    this.left = null;
-    this.right = null;
-    this.parent = null;
-    this.val = val;
-  }
+  for(let i=0; i<arr.length; i++)
+    if(arr[i] == search_val)
+      return i;
+  return -1;
 }
 
-class binary_tree
-{
-  concstructor(val)
-  {
-    this.head = new binary_tree_node(val);
-  }
-
-  insert_at_depth(val, curr_depth)
-  {
-  }
-  insert_at_depth(val, depth, root = this.head, curr_depth=0)
-  {
-    if(curr_depth > depth) return;
-    if(curr_depth < depth){
-      this.insert_at_depth(val, depth, root.left, curr_depth+1);
-      this.insert_at_depth(val, depth, root.right, curr_depth+1);
-      return;
-    }
-    root.val = val;
-  }
-}
-*/
-
-export { swap, randomize_array, array_of_indexes };
+export { swap, randomize_array, array_of_indexes, get_arr_index_of_val };

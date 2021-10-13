@@ -1,16 +1,17 @@
 import React from 'react';
 import ArrayView from '../../ArrayView/ArrayView';
-import {swap, array_of_indexes, randomize_array} from '../../../util';
+import {swap, array_of_indexes, randomize_array, get_arr_index_of_val} from '../../../util';
 
 function* BinarySearch(arr, search_val)
 {
   let l = 0;          // inclusive
   let r = arr.length; // exclusive
   let mid;
+  let index_of_search_val = get_arr_index_of_val(arr, search_val);
   while(l < r)
   {
     mid = Math.floor(l + (r-l)/2);
-  yield {array: arr, completed: new Set(), left_swap_ind: mid};
+  yield {array: arr, completed: new Set([index_of_search_val]), left_swap_ind: mid};
     if(arr[mid] === search_val)
     {
       break;
@@ -25,7 +26,7 @@ function* BinarySearch(arr, search_val)
     }
   }
   console.log(mid);
-  yield {array: arr, completed: new Set(), left_swap_ind: mid};
+  yield {array: arr, completed: new Set([index_of_search_val]), left_swap_ind: mid};
 }
 
 class BinarySearchContainer extends React.Component
