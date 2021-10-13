@@ -11,11 +11,6 @@ import ButtonContainer from "../../ButtonContainer/ButtonContainer";
 function* search_binary_tree(root, search_val)
 {
   console.log('SEARCH');
-  if(!root)
-  {
-    yield { blue_node_set: new Set(''), node: null};
-    return;
-  }
 
   yield { blue_node_set: new Set([root.val]), node: root};
 
