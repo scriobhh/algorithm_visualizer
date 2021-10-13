@@ -68,6 +68,7 @@ function* breadth_first_search(graph, start_vert, search_vert)
         if(opp_vert == search_vert)
         {
           yield {red_node_set: new Set(opp_vert), blue_node_set: visited_nodes, dark_blue_node_set: new Set(curr_vert)};
+          return;
         }
         visited_nodes.add(opp_vert);
         queue.push(opp_vert);
@@ -128,7 +129,7 @@ function* depth_first_search(graph, start_vert, search_vert)
   // ----
   let iter = DFS_recurse(start_vert, search_vert, visited_verts, visited_edges, back_edges, '', graph);
   let ob = iter.next();
-  while(!ob.done) { yield ob.value; ob = iter.next(); }
+  while(!ob.done) { yield ob.value; if(ob.value.red_node_set) { return; } ob = iter.next(); }
   // ----
 }
 
