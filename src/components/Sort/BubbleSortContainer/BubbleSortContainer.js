@@ -1,7 +1,6 @@
 import {swap, array_of_indexes, randomize_array} from '../../../util';
 import ArrayView from '../../ArrayView/ArrayView';
 import React from 'react';
-import FuncContextButton from '../../Buttons/FunctionContextButton';
 
 function* BubbleSort(arr)
 {

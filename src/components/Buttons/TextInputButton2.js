@@ -42,22 +42,37 @@ class TextInputButton2 extends React.Component
   }
 
   update_value = (event) => {
+    if(this.props.functionContext.active_func_ref == this.state.assigned_func)
+    {
+      event.preventDefault();
+      return;
+    }
     // TODO put in case 
     let raw_val = event.target.value;
     let translated_val = this.props.inputTranslationFunc(raw_val);
-    if(!this.props.inputValidatorFunc(translated_val)) // TODO make this give some visible feedback
-      return;
     this.setState( {translated_button_value: translated_val} );
   };
 
   render()
   {
-    let text_area_component = <textarea onClick={this.coroutine_step} rows="1" cols="3" maxlength="3" value={this.state.translated_button_value} onChange={this.update_value} />
+    let is_disabled = false;
+    if(!this.props.inputValidatorFunc(this.state.translated_button_value)) // TODO make this give some visible feedback
+      is_disabled = true;
+
+    let func_context_button = (
+        <FuncContextButton
+          coroutineStepArg={this.state.translated_button_value}
+          updateContainerCallback={this.props.updateContainerCallback}
+          assignedFunction={this.props.assignedFunction}
+          functionContext={this.props.functionContext}
+          isDisabled={is_disabled}>
+          { this.props.children }
+        </FuncContextButton>);
+
+    let text_area_component = <textarea rows="1" cols="3" maxlength="3" value={this.state.translated_button_value} onChange={this.update_value} />
     return (
       <div className="text-input-button-container">
-        <FuncContextButton coroutineStepArg={this.state.translated_button_value} updateContainerCallback={this.props.updateContainerCallback} assignedFunction={this.props.assignedFunction} functionContext={this.props.functionContext}>
-          { this.props.children }
-        </FuncContextButton>
+        { func_context_button }
         { text_area_component }
       </div>
     );

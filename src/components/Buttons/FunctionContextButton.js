@@ -52,7 +52,7 @@ class FuncContextButton extends React.Component
   render()
   {
     return (
-      <button className="func-context-button" onClick={this.coroutine_step}>
+      <button className="func-context-button" onClick={this.coroutine_step} disabled={this.props.isDisabled}>
         <div>{this.props.children}</div>
       </button>
     );
