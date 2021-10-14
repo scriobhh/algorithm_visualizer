@@ -12,45 +12,67 @@ import TextInputButton2 from "../../Buttons/TextInputButton2";
 //    the heapify will be recursively called on the child node that got swapped
 function* heapify(root)
 {
-  if(!root) return;
-  let largest_val_node = root;
+  while(root)
+  {
+    let largest_val_node = root;
 
-  if(root.left)
-  {
-    yield {blue_node_set: new Set([root.val]), red_node_set: new Set([root.left.val])};
-    if(root.left.val > largest_val_node.val)
+    if(root.left)
     {
-      largest_val_node = root.left;
+      yield {blue_node_set: new Set([root.val]), red_node_set: new Set([root.left.val])};
+      if(root.left.val > largest_val_node.val)
+      {
+        largest_val_node = root.left;
+      }
     }
-  }
-  if(root.right)
-  {
-    yield {blue_node_set: new Set([root.val]), red_node_set: new Set([root.right.val])};
-    if(root.right.val > largest_val_node.val)
+    if(root.right)
     {
-      largest_val_node = root.right;
+      yield {blue_node_set: new Set([root.val]), red_node_set: new Set([root.right.val])};
+      if(root.right.val > largest_val_node.val)
+      {
+        largest_val_node = root.right;
+      }
     }
-  }
 
-  yield {blue_node_set: new Set([root.val]), green_node_set: new Set([largest_val_node.val])};
-  
-  if(root !== largest_val_node)
-  {
-    let temp_val = root.val;
-    root.val = largest_val_node.val;
-    largest_val_node.val = temp_val;
-    yield {green_node_set: new Set([root.val]), blue_node_set: new Set([largest_val_node.val])};
-    // call hepify 2nd time since largest_val_node could potentially not be largest (if both children of the original root are larger than root)
-    // TODO RECURSIVE
-    //heapify(largest_val_node);
-    // ----
-    let it = heapify(largest_val_node);
-    let ob = it.next();
-    while(!ob.done) { yield ob.value; ob = it.next(); }
-    // ----
+    yield {blue_node_set: new Set([root.val]), green_node_set: new Set([largest_val_node.val])};
+    
+    if(root !== largest_val_node)
+    {
+      let temp_val = root.val;
+      root.val = largest_val_node.val;
+      largest_val_node.val = temp_val;
+      yield {green_node_set: new Set([root.val]), blue_node_set: new Set([largest_val_node.val])};
+      // call hepify 2nd time since largest_val_node could potentially not be largest (if both children of the original root are larger than root)
+      // TODO RECURSIVE
+      //heapify(largest_val_node);
+      // ----
+      //let it = heapify(largest_val_node);
+      //let ob = it.next();
+      //while(!ob.done) { yield ob.value; ob = it.next(); }
+      // ----
+    }
+
+    root = root.parent;
   }
 }
 
+function heapify_entire_tree(root)
+{
+
+  if(!root.left && !root.right)
+  {
+    let it = heapify(root.parent);
+    let ob = it.next();
+    while(!ob.done) { ob = it.next(); }
+    return;
+  }
+
+  if(root.left)
+    heapify_entire_tree(root.left);
+  if(root.right)
+    heapify_entire_tree(root.right);
+}
+
+/*
 function* heapify_entire_tree(root)
 {
   if(!root) return;
@@ -74,6 +96,7 @@ function* heapify_entire_tree(root)
   // ----
   yield {blue_node_set: new Set([root.val])};
 }
+*/
 
 function* insert(val, tree)
 {
@@ -106,15 +129,9 @@ function* insert(val, tree)
   }
 
   // heapify from inserted node upwards
-  while(node != null)
-  {
-    // ----
-    let it = heapify(node);
-    let ob = it.next();
-    while(!ob.done) { yield ob.value; ob = it.next(); }
-    // ----
-    node = node.parent;
-  }
+  let it = heapify(node);
+  let ob = it.next();
+  while(!ob.done) { yield ob.value; ob = it.next(); }
 }
 
 // TODO switch out the 'search' stuff with pop()
@@ -123,7 +140,9 @@ class HeapContainer extends React.Component
   constructor(props)
   {
     super(props);
-    this.state = {tree: new BinaryTree(3)};
+    let tree = new BinaryTree(4);
+    heapify_entire_tree(tree.head);
+    this.state = {tree: tree};
     this.state.func = null; // TODO is this used???
     this.state.func_context = {
       active_func_ref: null,
