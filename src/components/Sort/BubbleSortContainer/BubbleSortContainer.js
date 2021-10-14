@@ -1,6 +1,8 @@
 import {swap, array_of_indexes, randomize_array} from '../../../util';
 import ArrayView from '../../ArrayView/ArrayView';
 import React from 'react';
+import FuncContextButton from '../../Buttons/FunctionContextButton';
+import ButtonContainer from '../../ButtonContainer/ButtonContainer';
 
 function* BubbleSort(arr)
 {
@@ -52,28 +54,64 @@ class BubbleSortContainer extends React.Component
     let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     randomize_array(arr);
     this.state = { nums: arr };
-    this.state.sort_coroutine = BubbleSort(this.state.nums);
     // TODO update this so it doesn't cause errors if .next() returns done === true
-    this.state.sort_context = this.state.sort_coroutine.next().value;
+    let temp_gen_obj = BubbleSort(this.state.nums);
+    this.state.func_context = {
+      active_func_ref: this.sort_func_wrapper,
+      context: {
+        generator_obj: temp_gen_obj,
+        last_return_val: temp_gen_obj.next()
+      }
+    }
   }
-  sort_step = () => {
-    let temp = this.state.sort_coroutine.next();
-    if (!temp.done) this.setState( {sort_context: temp.value} );
-    //else
-      // TODO what to do if sort is finished
+
+  sort_func_wrapper = () => {
+    return BubbleSort();
   };
+
+  // TODO update_func_context is duplicated in many containers
+  update_func_context = (new_func_context) => {
+    // TODO will this work with just:
+    // this.setState( {func_context: new_func_context} );
+    // ????
+    if(new_func_context.context.last_return_val.done)
+      return;
+    else
+    {
+      this.setState({
+        func_context: {
+          active_func_ref: new_func_context.active_func_ref,
+          context: {
+            generator_obj: new_func_context.context.generator_obj,
+            last_return_val: new_func_context.context.last_return_val
+          }
+        }
+      });
+    }
+  };
+
   render()
   {
+    const button_el_arr = [
+      <FuncContextButton
+        coroutineStepArg={undefined} // arg passed to assignedFunction on each step
+        updateContainerCallback={this.update_func_context}
+        assignedFunction={this.sort_func_wrapper}
+        functionContext={this.state.func_context}
+        isDisabled={false}>
+        SORT
+      </FuncContextButton>,
+    ];
     return (
       <div className="sort-container">
         <div className="array-view-container">
           <div className="cont">
             <div className="thingy">
-              <ArrayView sortContext={this.state.sort_context} />
+              <ArrayView sortContext={this.state.func_context.context.last_return_val.value} />
             </div>
           </div>
         </div>
-        <button onClick={this.sort_step} className="sort-button"> SORT </button>
+        <ButtonContainer buttonElementArr={button_el_arr} />
       </div>
     );
   }
