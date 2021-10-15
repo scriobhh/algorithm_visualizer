@@ -111,8 +111,8 @@ function* insert(val, tree)
 
     if(!node.left)
     {
-      node.left = new TreeNode(val);
-      node.left.parent = node;
+      node.left = new TreeNode(tree.count_++, val, node);
+      //node.left.parent = node;
       tree.update_depth();
       break;
     }
@@ -120,8 +120,8 @@ function* insert(val, tree)
 
     if(!node.right)
     {
-      node.right = new TreeNode(val);
-      node.right.parent = node;
+      node.right = new TreeNode(tree.count_++, val, node);
+      //node.right.parent = node;
       tree.update_depth();
       break;
     }

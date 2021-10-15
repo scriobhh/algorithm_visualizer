@@ -9,7 +9,7 @@ function in_order_populate_node_list(root, node_list)
 {
   if(!root) return;
   in_order_populate_node_list(root.left, node_list);
-  node_list.push(root.val);
+  node_list[root.key] = root.val;
   in_order_populate_node_list(root.right, node_list);
 }
 
@@ -22,7 +22,7 @@ function in_order_populate_node_coords(root, curr_depth, curr_horizontal_pos, ma
   const x = (1/x_level_count) * (curr_horizontal_pos+1);
   const y_level_count = max_depth+2;  // max_deoth+1 is the number of depth levels to the tree, the extra +1 is so the last level is left empty
   const y = (1/y_level_count) * (curr_depth+1); // curr_depth+1 since curr_depth=0 is the first level, curr_depth=1 is the 2nd level etc
-  normalized_node_coords_map[root.val] = {x: x, y: y};
+  normalized_node_coords_map[root.key] = {x: x, y: y};
   in_order_populate_node_coords(root.right, curr_depth+1, curr_horizontal_pos*2+1, max_depth, normalized_node_coords_map);
 }
 
@@ -53,7 +53,7 @@ function BinaryTreeView(props)
     };
   });
 
-  let node_list = [];
+  let node_list = {};
   in_order_populate_node_list(props.tree.head, node_list)
 
   // TODO code re-use with GraphView by passing function to shared code in GenerateVertices
@@ -63,11 +63,11 @@ function BinaryTreeView(props)
   console.log('YUP');
   console.log(node_list);
   console.log(normalized_node_coords_map);
-  let node_screenspace_coords_list = get_normalized_coords_to_screenspace_coords(node_list, normalized_node_coords_map);
+  let node_screenspace_coords_list = get_normalized_coords_to_screenspace_coords(normalized_node_coords_map);
   console.log(node_screenspace_coords_list);
   let node_el_list = generate_vertex_list(node_list, node_screenspace_coords_list, props.context, width);
 
-  let edge_list = [];
+  let edge_list = {}
   generate_edge_list_for_binary_tree(props.tree.head, edge_list);
 
   console.log('EDGE LIST TREE');
@@ -84,19 +84,23 @@ function BinaryTreeView(props)
 function generate_edge_list_for_binary_tree(root, edge_list)
 {
   if(!root) return;
+  edge_list[root.key] = [];
   if(root.left)
   {
-    let edge = new Edge(root.val, root.left.val)
-    edge_list.push(edge);
+    let edge = new Edge(root.key, root.left.key)
+    edge_list[root.key].push(edge);
     generate_edge_list_for_binary_tree(root.left, edge_list)
   }
 
   if(root.right)
   {
-    let edge = new Edge(root.val, root.right.val)
-    edge_list.push(edge);
+    let edge = new Edge(root.key, root.right.key)
+    edge_list[root.key].push(edge);
     generate_edge_list_for_binary_tree(root.right, edge_list)
   }
+
+  if(edge_list[root.key].length === 0)
+    delete edge_list[root.key];
 }
 
 // TODO this is completely duplicated from GraphView.js

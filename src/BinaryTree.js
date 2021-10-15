@@ -1,11 +1,12 @@
 
 class TreeNode
 {
-  constructor(val=null, parent=null)
+  constructor(key=null, val=null, parent=null)
   {
     this.left = null;
     this.right = null;
     this.parent = parent;
+    this.key = key;
     this.val = val;
   }
 
@@ -48,15 +49,16 @@ class BinaryTree
 
     if(curr_depth < max_depth)
     {
-      root.left = new TreeNode(-1, root);
+      root.left = new TreeNode(-1, -1, root);
       this.create_sorted_tree(max_depth, root.left, curr_depth+1);
     }
 
-    root.val = this.count_++;
+    root.key = this.count_++;
+    root.val = root.key;
 
     if(curr_depth < max_depth)
     {
-      root.right = new TreeNode(-1, root);
+      root.right = new TreeNode(-1, -1, root);
       this.create_sorted_tree(max_depth, root.right, curr_depth+1);
     }
   }
@@ -170,8 +172,8 @@ class BinaryTree
     {
       if(!root.left)
       {
-        root.left = new TreeNode(val);
-        root.left.parent = root;
+        root.left = new TreeNode(this.count_++, val, root);
+        //root.left.parent = root;
         if(root.left.get_depth() >= this.max_depth) this.max_depth += 1;
       }
       else
@@ -183,8 +185,8 @@ class BinaryTree
     {
       if(!root.right)
       {
-        root.right = new TreeNode(val);
-        root.right.parent = root;
+        root.right = new TreeNode(this.count_++, val, root);
+        //root.right.parent = root;
         if(root.right.get_depth() >= this.max_depth) this.max_depth += 1;
       }
       else

@@ -205,17 +205,21 @@ function LineList(props)
   let cont_h = props.containerHeight;
   let node_w = props.nodeWidth;
   console.log(`CONT_W ${cont_w}   CONT_H ${cont_h}`);
-  edge_list.forEach((edge, ind) => {
-    if(!visited_edges.has(edge))
-    {
-      let orig = line_point_center(vertex_screenspace_coords_map[edge.orig], cont_h, 50);
-      let dest = line_point_center(vertex_screenspace_coords_map[edge.dest], cont_h, 50);
-      let edge_coords = {
-        orig: orig,
-        dest: dest
-      };
-      edge_screenspace_coords.push(edge_coords);
-    }
+  Object.entries(edge_list).forEach((entry, ind) => {
+    let key = entry[0];
+    let edge_arr = entry[1];
+    edge_arr.forEach(edge => {
+      if(!visited_edges.has(edge))
+      {
+        let orig = line_point_center(vertex_screenspace_coords_map[edge.orig], cont_h, 50);
+        let dest = line_point_center(vertex_screenspace_coords_map[edge.dest], cont_h, 50);
+        let edge_coords = {
+          orig: orig,
+          dest: dest
+        };
+        edge_screenspace_coords.push(edge_coords);
+      }
+    });
   });
 
   let line_list = edge_screenspace_coords.map((edges_coords) => {

@@ -19,15 +19,15 @@ function vertex_point_center(point, container_width_pixels, node_width_pixels)
   }
   return p;
 }
-function get_normalized_coords_to_screenspace_coords(node_list, normalized_node_coords_map)
+function get_normalized_coords_to_screenspace_coords(normalized_node_coords_map)
 {
-
   let vertex_screenspace_coords_map = {};
-  node_list.forEach((el, ind) => {
-    let coords = normalized_node_coords_map[el];
-    coords = normalized_coords_to_screen_space_coords(coords);
-    vertex_screenspace_coords_map[el] = coords;
-  })
+  Object.entries(normalized_node_coords_map).forEach((entry, ind) => {
+    let key = entry[0];
+    let normalized_coords = entry[1];
+    let screen_space_coords = normalized_coords_to_screen_space_coords(normalized_coords);
+    vertex_screenspace_coords_map[key] = screen_space_coords;
+  });
   return vertex_screenspace_coords_map;
 }
 function generate_vertex_list(node_list, vertex_screenspace_coords_list, context, container_width)
@@ -35,34 +35,36 @@ function generate_vertex_list(node_list, vertex_screenspace_coords_list, context
 
   //let vertex_screenspace_coords_list = get_normalized_coords_to_screenspace_coords(node_list, normalized_node_coords_map);
 
-  let el_list = node_list.map((el, ind) => {
+  let el_list = Object.entries(node_list).map((entry, ind) => {
+    let key = entry[0];
+    let node_val = entry[1];
     // TODO this circle_class code is duplicated in BinaryTreeView
     let circle_class = 'default-circle';
     if(context)
     {
-      if(context.red_node_set && context.red_node_set.has(el))
+      if(context.red_node_set && context.red_node_set.has(key))
       {
         circle_class = 'red-circle';
       }
-      if(context.blue_node_set && context.blue_node_set.has(el))
+      if(context.blue_node_set && context.blue_node_set.has(key))
       {
         circle_class = 'blue-circle';
       }
-      if(context.green_node_set && context.green_node_set.has(el))
+      if(context.green_node_set && context.green_node_set.has(key))
       {
         circle_class = 'green-circle';
       }
-      if(context.dark_blue_node_set && context.dark_blue_node_set.has(el))
+      if(context.dark_blue_node_set && context.dark_blue_node_set.has(key))
       {
         circle_class = 'dark-blue-circle';
       }
     }
-    let coords = vertex_screenspace_coords_list[el];
+    let coords = vertex_screenspace_coords_list[key];
     let point = vertex_point_center(coords, container_width, 50);
     let x = `${point.x}%`;
     let y = `${point.y}%`;
     return (
-      <Vertex circleClass={circle_class} left={x} top={y}>{el}</Vertex>
+      <Vertex circleClass={circle_class} left={x} top={y}>{node_val}</Vertex>
     );
   });
 
