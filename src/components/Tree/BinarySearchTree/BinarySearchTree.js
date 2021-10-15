@@ -12,11 +12,11 @@ function* search_binary_tree(root, search_val)
 {
   console.log('SEARCH');
 
-  yield { blue_node_set: new Set([root.val]), node: root};
+  yield { blue_node_set: new Set([root.key]), node: root};
 
   if(search_val === root.val)
   {
-    yield { red_node_set: new Set([root.val]), node: root};
+    yield { red_node_set: new Set([root.key]), node: root};
   }
   else if(search_val < root.val)
   {
@@ -37,11 +37,11 @@ function* search_binary_tree(root, search_val)
 function* insert(val, root, tree)
 {
   if(!root) yield;
-  yield {blue_node_set: new Set([root.val])};
+  yield {blue_node_set: new Set([root.key])};
   if(val === root.val)
   {
     // TODO what to do with duplicates
-    yield {red_node_set: new Set([root.val])};
+    yield {red_node_set: new Set([root.key])};
   }
   else if(val < root.val)
   {
@@ -51,7 +51,7 @@ function* insert(val, root, tree)
       //root.left.parent = root;
       // TODO make this work with the next generator function
       if(root.left.get_depth() >= tree.max_depth) tree.max_depth += 1;
-      yield {red_node_set: new Set([root.left.val])};
+      yield {red_node_set: new Set([root.left.key])};
     }
     else
     {
@@ -68,7 +68,7 @@ function* insert(val, root, tree)
       //root.right.parent = root;
       // TODO make this work with the next generator function
       if(root.right.get_depth() >= tree.max_depth) tree.max_depth += 1;
-      yield {red_node_set: new Set([root.right.val])};
+      yield {red_node_set: new Set([root.right.key])};
     }
     else
     {
@@ -83,19 +83,19 @@ function* next_in_order(root)
 {
   let right_subtree = root.right;
 
-  yield {blue_node_set: new Set([right_subtree.val]), node: right_subtree};
+  yield {blue_node_set: new Set([right_subtree.key]), node: right_subtree};
 
   let min_node = right_subtree;
   while(min_node.left)
   {
     min_node = min_node.left;
-    yield {blue_node_set: new Set([min_node.val]), node: min_node};
+    yield {blue_node_set: new Set([min_node.key]), node: min_node};
   }
-  yield {red_node_set: new Set([min_node.val]), node: min_node};
+  yield {red_node_set: new Set([min_node.key]), node: min_node};
 }
 
-// TODO this performs a 2nd unecessary search of the tree on removals
-// for nodes with 2 children
+// TODO this performs 2 searches of the tree on removals of nodes with 2 children
+// the 2nd search is unecessary
 function* remove(val, tree)
 {
   // ----
@@ -122,20 +122,20 @@ function* remove(val, tree)
     }
     // TODO make this work with generator
     tree.update_depth();
-    yield {red_node_set: new Set([node_to_remove.val])};
+    yield {red_node_set: new Set([node_to_remove.key])};
   }
   else if(node_to_remove.left && node_to_remove.right)
   {
     // just copying the value is ok since the value of the node 
     // is used as an identifier for the node by the rendering code
 
-    yield {blue_node_set: new Set([node_to_remove.val])};
+    yield {blue_node_set: new Set([node_to_remove.key])};
 
     // ----
     let it = next_in_order(node_to_remove);
     let ob = it.next();
     let ret = ob;
-    while(!ob.done) { ob.value.green_node_set = new Set([node_to_remove.val]); yield ob.value; ret = ob; ob = it.next(); }
+    while(!ob.done) { ob.value.green_node_set = new Set([node_to_remove.key]); yield ob.value; ret = ob; ob = it.next(); }
     // ----
     let replacement_node = ret.value.node;
     let temp_val = replacement_node.val;
@@ -143,13 +143,13 @@ function* remove(val, tree)
     // ----
     it = remove(replacement_node.val, tree);
     ob = it.next();
-    while(!ob.done) { ob.value.green_node_set = new Set([node_to_remove.val]); yield ob.value; ob = it.next(); }
+    while(!ob.done) { ob.value.green_node_set = new Set([node_to_remove.key]); yield ob.value; ob = it.next(); }
     // ----
     node_to_remove.val = temp_val;
 
     // TODO make this work with generator
     tree.update_depth();
-    yield {red_node_set: new Set([node_to_remove.val])};
+    yield {red_node_set: new Set([node_to_remove.key])};
   }
   else
   {
@@ -171,7 +171,7 @@ function* remove(val, tree)
     replacement_node.parent = null;
     // TODO make this work with generator
     tree.update_depth();
-    yield {red_node_set: new Set([node_to_remove.val])};
+    yield {red_node_set: new Set([node_to_remove.key])};
   }
 }
 
@@ -189,12 +189,12 @@ function* right_rotate(tree, root)
   //     / \
   //    E   C
 
-  yield {blue_node_set: new Set([root.val])};
+  yield {blue_node_set: new Set([root.key])};
   let B = root.left;
-  if(!B) yield {red_node_set: new Set([root.val])};  // can't rotate non-existing node into root node position
+  if(!B) yield {red_node_set: new Set([root.key])};  // can't rotate non-existing node into root node position
   let E = B.right;
 
-  yield {blue_node_set: new Set([root.val]), green_node_set: new Set([B.val]), red_node_set: new Set([root.right.val])};
+  yield {blue_node_set: new Set([root.key]), green_node_set: new Set([B.key]), red_node_set: new Set([root.right.val])};
 
   B.right = root;
   let original_root_parent = root.parent;
@@ -211,7 +211,7 @@ function* right_rotate(tree, root)
   }
   
   tree.update_depth();
-  yield {blue_node_set: new Set([root.val]), green_node_set: new Set([B.val]), red_node_set: new Set([root.right.val])};
+  yield {blue_node_set: new Set([root.key]), green_node_set: new Set([B.key]), red_node_set: new Set([root.right.key])};
 }
 
 function* left_rotate(tree, root)
@@ -228,12 +228,12 @@ function* left_rotate(tree, root)
   //  / \
   // B   D
 
-  yield {blue_node_set: new Set([root.val])};
+  yield {blue_node_set: new Set([root.key])};
   let C = root.right;
   if(!C) return;  // can't rotate non-existing node into root node position
   let D = C.left;
 
-  yield {blue_node_set: new Set([root.val]), green_node_set: new Set([C.val]), red_node_set: new Set([root.left.val])};
+  yield {blue_node_set: new Set([root.key]), green_node_set: new Set([C.key]), red_node_set: new Set([root.left.key])};
 
   C.left = root;
   let original_root_parent = root.parent;
@@ -250,7 +250,7 @@ function* left_rotate(tree, root)
   }
 
   tree.update_depth();
-  yield {blue_node_set: new Set([root.val]), green_node_set: new Set([C.val]), red_node_set: new Set([root.left.val])};
+  yield {blue_node_set: new Set([root.key]), green_node_set: new Set([C.key]), red_node_set: new Set([root.left.key])};
 }
 
 class BinarySearchTree extends React.Component
