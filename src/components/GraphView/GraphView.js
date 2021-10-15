@@ -157,28 +157,9 @@ function GraphView(props)
   let graph = props.graphObj;
   let node_list = graph.get_vertices();
 
-  /*
-  let iter = get_next_coords(node_list.length, 0.5, 0.5, 0.5);  // normalized from -1 to 1 (inclusive)
-  let normalized_node_coords_map = {};
-  node_list.map((el, ind) => {
-    let coords = iter.next();
-    console.assert(coords.done == false, 'get_next_coords coroutine ended earlier than expected');
-    normalized_node_coords_map[el] = coords.value;
-  });
-  */
-
   // TODO code re-use with BinaryTreeView by passing function to shared code in GenerateVertices
   let normalized_node_coords_map = {};
   populate_normalized_coords(node_list, 0.5, 0.5, 0.5, normalized_node_coords_map);  // normalized from -1 to 1 (inclusive)
-
-  /*
-  let vertex_screenspace_coords_list = {};
-  vertex_list.forEach((el, ind) => {
-    let coords = normalized_node_coords_map[el];
-    coords = normalized_coords_to_screen_space_coords(coords);
-    vertex_screenspace_coords_list[el] = coords;
-  })
-  */
 
   let [width, setWidth] = useState(0);
   let [height, setHeight] = useState(0);
@@ -199,39 +180,6 @@ function GraphView(props)
       setHeight(el.clientHeight);
     };
   });
-
-  /*
-  let node_list = vertex_list.map((el, ind) => {
-    // TODO this circle_class code is duplicated in BinaryTreeView
-    let circle_class = 'default-circle';
-    if(props.context)
-    {
-      if(props.context.red_node_set && props.context.red_node_set.has(el))
-      {
-        circle_class = 'red-circle';
-      }
-      if(props.context.blue_node_set && props.context.blue_node_set.has(el))
-      {
-        circle_class = 'blue-circle';
-      }
-      if(props.context.green_node_set && props.context.green_node_set.has(el))
-      {
-        circle_class = 'green-circle';
-      }
-      if(props.context.dark_blue_node_set && props.context.dark_blue_node_set.has(el))
-      {
-        circle_class = 'dark-blue-circle';
-      }
-    }
-    let coords = vertex_screenspace_coords_list[el];
-    let point = vertex_point_center(coords, width, 50);
-    let x = `${point.x}%`;
-    let y = `${point.y}%`;
-    return (
-      <Vertex circleClass={circle_class} left={x} top={y}>{el}</Vertex>
-    );
-  });
-  */
 
   let vertex_screenspace_coords_list = get_normalized_coords_to_screenspace_coords(node_list, normalized_node_coords_map);
   let node_el_list = generate_vertex_list(node_list, vertex_screenspace_coords_list, props.context, width);

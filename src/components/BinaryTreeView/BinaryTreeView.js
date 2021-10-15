@@ -26,28 +26,6 @@ function in_order_populate_node_coords(root, curr_depth, curr_horizontal_pos, ma
   in_order_populate_node_coords(root.right, curr_depth+1, curr_horizontal_pos*2+1, max_depth, normalized_node_coords_map);
 }
 
-// TODO figure out how to select tree nodes for highlighting (I think assign a key(integer identifier) to each node for rendering code to check, then make variables/lists of the keys you want to highlight)
-// TODO move this to its' own file
-// TODO potentially come up with different names than red_node, blue_node, green_node etc.
-// -----
-// base cases:
-//  2nd last GUI row
-//  3rd last GUI row
-// (will need to keep track of GUI rows outside of this func)
-// (number of GUI rows will be based on max depth of tree)
-// (the GUI node containers are rigid and will always act like it has a full tree of max depth of the tree)
-// (in order to make this easy, the Tree should keep track of its' max depth, and update this on insertions, deletions and rotations)
-// only render child node if it exists (treat each side separately)
-// only draw line if there is child node (treat each side separately)
-// you will have to create an empty div with no value or svg line if the child doesn't exist
-// if you don't make an empty grid it will break the GUI layout
-// -----
-// container (note this is slightly different depending on if 2nd last node or not)
-//  parent node value
-//  left child (recursive)
-//  right child(recursive)
-//  svg line for left child
-//  svg line for right child
 function BinaryTreeView(props)
 {
   console.log(props.context);
