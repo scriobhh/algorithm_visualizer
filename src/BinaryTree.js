@@ -36,9 +36,9 @@ class BinaryTree
     {
       let temp = new TreeNode();
       this.max_depth = max_depth;
+      this.count_ = 0;
       this.create_sorted_tree(max_depth, temp, curr_depth);
       console.log(temp);
-      this.count_ = 0;
       return temp;
     }
 

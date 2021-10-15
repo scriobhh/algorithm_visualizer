@@ -18,7 +18,7 @@ function* heapify(root)
 
     if(root.left)
     {
-      yield {blue_node_set: new Set([root.val]), red_node_set: new Set([root.left.val])};
+      yield {blue_node_set: new Set([root.key]), red_node_set: new Set([root.left.key])};
       if(root.left.val > largest_val_node.val)
       {
         largest_val_node = root.left;
@@ -26,21 +26,21 @@ function* heapify(root)
     }
     if(root.right)
     {
-      yield {blue_node_set: new Set([root.val]), red_node_set: new Set([root.right.val])};
+      yield {blue_node_set: new Set([root.key]), red_node_set: new Set([root.right.key])};
       if(root.right.val > largest_val_node.val)
       {
         largest_val_node = root.right;
       }
     }
 
-    yield {blue_node_set: new Set([root.val]), green_node_set: new Set([largest_val_node.val])};
+    yield {blue_node_set: new Set([root.key]), green_node_set: new Set([largest_val_node.key])};
     
     if(root !== largest_val_node)
     {
       let temp_val = root.val;
       root.val = largest_val_node.val;
       largest_val_node.val = temp_val;
-      yield {green_node_set: new Set([root.val]), blue_node_set: new Set([largest_val_node.val])};
+      yield {green_node_set: new Set([root.key]), blue_node_set: new Set([largest_val_node.key])};
       // call hepify 2nd time since largest_val_node could potentially not be largest (if both children of the original root are larger than root)
       // TODO RECURSIVE
       //heapify(largest_val_node);
@@ -107,7 +107,7 @@ function* insert(val, tree)
   while(queue.length > 0)
   {
     node = queue.shift();
-    yield {blue_node_set: new Set([node.val])};
+    yield {blue_node_set: new Set([node.key])};
 
     if(!node.left)
     {
