@@ -67,7 +67,7 @@ function BinaryTreeView(props)
   console.log(node_screenspace_coords_list);
   let node_el_list = generate_vertex_list(node_list, node_screenspace_coords_list, props.context, width);
 
-  let edge_list = {}
+  let edge_list = {};
   generate_edge_list_for_binary_tree(props.tree.head, edge_list);
 
   console.log('EDGE LIST TREE');

@@ -144,7 +144,7 @@ class Graph
         this.add_vertex(vert);
       });
     }
-    // TODO is the edge_list necessary???
+
     this.edge_list = [];
     _edge_list.forEach((edge) => {
       this.add_edge(edge);

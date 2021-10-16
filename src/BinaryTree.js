@@ -49,16 +49,17 @@ class BinaryTree
 
     if(curr_depth < max_depth)
     {
-      root.left = new TreeNode(-1, -1, root);
+      root.left = new TreeNode(String(-1), -1, root);
       this.create_sorted_tree(max_depth, root.left, curr_depth+1);
     }
 
-    root.key = this.count_++;
-    root.val = root.key;
+    let key_as_int = this.count_++;
+    root.key = String(key_as_int);
+    root.val = key_as_int;
 
     if(curr_depth < max_depth)
     {
-      root.right = new TreeNode(-1, -1, root);
+      root.right = new TreeNode(String(-1), -1, root);
       this.create_sorted_tree(max_depth, root.right, curr_depth+1);
     }
   }
@@ -172,7 +173,7 @@ class BinaryTree
     {
       if(!root.left)
       {
-        root.left = new TreeNode(this.count_++, val, root);
+        root.left = new TreeNode(String(this.count_++), val, root);
         //root.left.parent = root;
         if(root.left.get_depth() >= this.max_depth) this.max_depth += 1;
       }
@@ -185,7 +186,7 @@ class BinaryTree
     {
       if(!root.right)
       {
-        root.right = new TreeNode(this.count_++, val, root);
+        root.right = new TreeNode(String(this.count_++), val, root);
         //root.right.parent = root;
         if(root.right.get_depth() >= this.max_depth) this.max_depth += 1;
       }

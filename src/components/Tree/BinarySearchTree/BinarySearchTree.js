@@ -47,7 +47,7 @@ function* insert(val, root, tree)
   {
     if(!root.left)
     {
-      root.left = new TreeNode(tree.count_++, val, root);
+      root.left = new TreeNode(String(tree.count_++), val, root);
       //root.left.parent = root;
       // TODO make this work with the next generator function
       if(root.left.get_depth() >= tree.max_depth) tree.max_depth += 1;
@@ -64,7 +64,7 @@ function* insert(val, root, tree)
   {
     if(!root.right)
     {
-      root.right = new TreeNode(tree.count_++, val, root);
+      root.right = new TreeNode(String(tree.count_++), val, root);
       //root.right.parent = root;
       // TODO make this work with the next generator function
       if(root.right.get_depth() >= tree.max_depth) tree.max_depth += 1;

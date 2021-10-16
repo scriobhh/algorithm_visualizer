@@ -34,7 +34,7 @@ function get_normalized_coords_to_screenspace_coords(normalized_node_coords_map)
 function generate_vertex_list(node_list, vertex_screenspace_coords_list, context, container_width)
 {
   let el_list = Object.entries(node_list).map((entry, ind) => {
-    let key = parseInt(entry[0]);
+    let key = entry[0];
     let node_val = entry[1];
     // TODO this circle_class code is duplicated in BinaryTreeView
     let circle_class = 'default-circle';

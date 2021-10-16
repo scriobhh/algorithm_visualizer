@@ -58,7 +58,7 @@ function populate_normalized_coords(node_list, cx, cy, r, normalized_node_coords
   // the number of spaces for vertices goes up in increments of 4
   // if the number of spaces for vertices will always be (2+ 4*N) where N is any arbitrary value
 
-  let el_count = node_list.length;
+  let el_count = Object.keys(node_list).length;
   let N = (el_count-2) / 4;
   let number_of_coords = (N <= 0) ? 2 : 2 + Math.ceil(N)*4;
 
@@ -67,8 +67,9 @@ function populate_normalized_coords(node_list, cx, cy, r, normalized_node_coords
   coords_per_half_circle += 1;  // divide the circle up into k+1 parts instead of k parts, this prevents the loop below from reaching the top (sin_val=0) of the circle
 
   let sin_val = -Math.PI;  // sin value for bottom of circle (y=-r x=0)
-  for(let i=0; i<el_count; i++)
-  {
+  //for(let i=0; i<el_count; i++)
+  //{
+  Object.keys(node_list).forEach((key, i) => {
     let temp_sin_val;
     if(i % 2 == 0)
     {
@@ -79,8 +80,8 @@ function populate_normalized_coords(node_list, cx, cy, r, normalized_node_coords
       temp_sin_val = sin_val + Math.PI;  // move temp_sin_val to opposite side of the circle
 
     let curr_coord = get_coord(temp_sin_val, cx, cy, r);
-    normalized_node_coords_map[node_list[i]] = curr_coord;
-  }
+    normalized_node_coords_map[key] = curr_coord;
+  });
 }
 
 /*
@@ -152,10 +153,19 @@ function vertex_point_center(point, container_width_pixels, node_width_pixels)
   return p;
 }
 
+function populate_node_list(node_list)
+{
+  let nodes = {};
+  node_list.forEach(node => {
+    nodes[node] = node;
+  });
+  return nodes;
+}
+
 function GraphView(props)
 {
   let graph = props.graphObj;
-  let node_list = graph.get_vertices();
+  let node_list = populate_node_list(graph.get_vertices());
 
   // TODO code re-use with BinaryTreeView by passing function to shared code in GenerateVertices
   let normalized_node_coords_map = {};
@@ -181,14 +191,16 @@ function GraphView(props)
     };
   });
 
-  let vertex_screenspace_coords_list = get_normalized_coords_to_screenspace_coords(node_list, normalized_node_coords_map);
+  let vertex_screenspace_coords_list = get_normalized_coords_to_screenspace_coords(normalized_node_coords_map);
   let node_el_list = generate_vertex_list(node_list, vertex_screenspace_coords_list, props.context, width);
   
+  let edge_list = generate_edge_list_for_graph(graph);
+
   return (
     <div className='graph-view-container'>
       <div className='graph-view'>
         {node_el_list.map((node) => node)}
-        <LineList vertexScreenspaceCoordsList={vertex_screenspace_coords_list} edgeList={graph.get_edges()} containerWidth={width} containerHeight={height} nodeWidth={nodeWidth}/>
+        <LineList vertexScreenspaceCoordsList={vertex_screenspace_coords_list} edgeList={edge_list} containerWidth={width} containerHeight={height} nodeWidth={nodeWidth}/>
       </div>
     </div>
   );
@@ -237,6 +249,17 @@ function LineList(props)
       {line_list.map((line) => line)}
     </div>
   );
+}
+
+function generate_edge_list_for_graph(graph)
+{
+  let edge_list = {};
+  graph.get_edges().forEach(edge => {
+    let key = edge.orig;
+    if(!edge_list[key]) edge_list[key] = [];
+    edge_list[key].push(edge);
+  });
+  return edge_list;
 }
 
 export {GraphView, LineList};
