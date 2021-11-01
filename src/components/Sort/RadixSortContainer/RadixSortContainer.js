@@ -1,6 +1,8 @@
 import React from 'react';
 import { swap, randomize_array} from '../../../util';
 import ArrayView from '../../ArrayView/ArrayView';
+import ButtonContainer from '../../ButtonContainer/ButtonContainer';
+import FuncContextButton from '../../Buttons/FunctionContextButton';
 
 function get_max(arr)
 {
@@ -57,21 +59,20 @@ function* counting_sort(arr, digit)
 
   for(let i=1; i<count_arr.length; i++)
   {
-    yield {array: arr, count_array: count_arr, current_digit: digit, completed: new Set()};
+    // yield {array: arr, count_array: count_arr, current_digit: digit, completed: new Set()};
     count_arr[i] += count_arr[i-1];
   }
 
   for(let i=len-1; i>=0; i--)
   {
-    yield {array: arr, count_array: count_arr, current_digit: digit, completed: new Set()};
+    yield {array: arr, count_array: count_arr, output_arr: output_arr, current_digit: digit, completed: new Set()};
     let key = extract_digit(arr[i], digit);
     count_arr[key] -= 1;
     let sort_index = count_arr[key];
 
     output_arr[sort_index] = arr[i];
   }
-  // TODO debug code
-  console.log(output_arr);
+
   yield {finished: true, output: output_arr};
 }
 
@@ -108,39 +109,77 @@ class RadixSortContainer extends React.Component
     randomize_array(arr);
     this.state.arr = arr;
 
-    this.state.sort_coroutine = RadixSort(this.state.arr);
-    // TODO this might break if .next() has done: true on first iteration
-    this.state.sort_context = this.state.sort_coroutine.next().value;
-  }
-  sort_step = () => {
-    let temp = this.state.sort_coroutine.next();
-    if(!temp.done)
-    {
-      this.setState( {sort_context: temp.value} );
+    let temp_gen_obj = RadixSort(this.state.arr);
+    this.state.func_context = {
+      active_func_ref: this.sort_func_wrapper,
+      context: {
+        generator_obj: temp_gen_obj,
+        last_return_val: temp_gen_obj.next()
+      }
     }
   }
+
+  // TODO update_func_context is duplicated in many containers
+  update_func_context = (new_func_context) => {
+    // TODO will this work with just:
+    // this.setState( {func_context: new_func_context} );
+    // ????
+    if(new_func_context.context.last_return_val.done)
+      return;
+    else
+    {
+      this.setState({
+        func_context: {
+          active_func_ref: new_func_context.active_func_ref,
+          context: {
+            generator_obj: new_func_context.context.generator_obj,
+            last_return_val: new_func_context.context.last_return_val
+          }
+        }
+      });
+    }
+  };
+
+  sort_func_wrapper = () => {
+    return RadixSort();
+  };
+
   render()
   {
-    let dummy_context = {array: this.state.sort_context.count_array, completed: new Set()};
-    //console.log(dummy_context.array.length);
     // TODO crashes when rendering dummy_context ArrayView when count_array is undefined (no return from RadixSort())
-    if(dummy_context.array)
+    const button_el_arr = [
+      <FuncContextButton
+        coroutineStepArg={undefined} // arg passed to assignedFunction on each step
+        updateContainerCallback={this.update_func_context}
+        assignedFunction={this.sort_func_wrapper}
+        functionContext={this.state.func_context}
+        isDisabled={false}>
+        SORT
+      </FuncContextButton>,
+    ];
+    let func_context = this.state.func_context.context.last_return_val.value;
+    if(func_context.count_array)
     {
       return (
         <div className="sort-container">
           <div className="array-view-container">
             <div className="cont">
               <div className="thingy">
-                <ArrayView sortContext={this.state.sort_context} />
+                <ArrayView sortContext={func_context} />
               </div>
             </div>
             <div className="cont">
               <div className="thingy">
-                <ArrayView sortContext={dummy_context} />
+                <ArrayView sortContext={{array: func_context.count_array, completed: new Set()}} />
+              </div>
+            </div>
+            <div className="cont">
+              <div className="thingy">
+                <ArrayView sortContext={{array: func_context.output_arr, completed: new Set()}} />
               </div>
             </div>
           </div>
-          <button onClick={this.sort_step} className="sort-button"> SORT </button>
+          <ButtonContainer buttonElementArr={button_el_arr} />
         </div>
       );
     }
@@ -151,11 +190,11 @@ class RadixSortContainer extends React.Component
           <div className="array-view-container">
             <div className="cont">
               <div className="thingy">
-                <ArrayView sortContext={this.state.sort_context} />
+                <ArrayView sortContext={func_context} />
               </div>
             </div>
           </div>
-          <button onClick={this.sort_step} className="sort-button"> SORT </button>
+          <ButtonContainer buttonElementArr={button_el_arr} />
         </div>
       );
     }
