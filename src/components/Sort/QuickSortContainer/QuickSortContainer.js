@@ -1,6 +1,8 @@
 import React from 'react';
 import { swap, randomize_array} from '../../../util';
 import ArrayView from '../../ArrayView/ArrayView';
+import FuncContextButton from '../../Buttons/FunctionContextButton';
+import ButtonContainer from '../../ButtonContainer/ButtonContainer';
 
 // TODO highlight the current area being considered (the region from l to r)
 function* QuickSort(arr, l, r)
@@ -51,68 +53,66 @@ class QuickSortContainer extends React.Component
     randomize_array(arr);
     this.state.arr = arr;
 
-    this.state.sort_coroutine = QuickSort(this.state.arr, 0, this.state.arr.length);
-    // TODO this might break if .next() has done: true on first iteration
-    this.state.sort_context = this.state.sort_coroutine.next().value;
-  }
-  sort_step = () => {
-    let temp = this.state.sort_coroutine.next();
-    if(!temp.done)
-    {
-      this.setState( {sort_context: temp.value} );
+    let temp_gen_obj = QuickSort(this.state.arr, 0, this.state.arr.length);
+    this.state.func_context = {
+      active_func_ref: this.sort_func_wrapper,
+      context: {
+        generator_obj: temp_gen_obj,
+        last_return_val: temp_gen_obj.next()
+      }
     }
   }
+
+  // TODO update_func_context is duplicated in many containers
+  update_func_context = (new_func_context) => {
+    // TODO will this work with just:
+    // this.setState( {func_context: new_func_context} );
+    // ????
+    if(new_func_context.context.last_return_val.done)
+      return;
+    else
+    {
+      this.setState({
+        func_context: {
+          active_func_ref: new_func_context.active_func_ref,
+          context: {
+            generator_obj: new_func_context.context.generator_obj,
+            last_return_val: new_func_context.context.last_return_val
+          }
+        }
+      });
+    }
+  };
+
+  sort_func_wrapper = () => {
+    return QuickSort();
+  };
+
+  // TODO update this so that it renders elements that are part of the current sort sub-array as a different color
   render()
   {
+    let button_el_arr = [
+      <FuncContextButton
+        coroutineStepArg={undefined} // arg passed to assignedFunction on each step
+        updateContainerCallback={this.update_func_context}
+        assignedFunction={this.sort_func_wrapper}
+        functionContext={this.state.func_context}
+        isDisabled={false}>
+        SORT
+      </FuncContextButton>,
+    ];
     return (
       <div className="sort-container">
         <div className="array-view-container">
           <div className="cont">
             <div className="thingy">
-              <ArrayView sortContext={this.state.sort_context} />
+              <ArrayView sortContext={this.state.func_context.context.last_return_val.value} />
             </div>
           </div>
         </div>
-        <button onClick={this.sort_step} className="sort-button"> SORT </button>
+        <ButtonContainer buttonElementArr={button_el_arr} />
       </div>
     );
-    /* 
-    return (
-      <div className="sort-container">
-        <div className="array-view-container">
-          {this.state.sort_context_stack.map((depth_arr, depth_index) => {
-            if(this.state.merge_flag && (depth_index === this.state.sort_context_stack.length-1))
-            {
-              let left_context = {array: depth_arr.left_arr, completed: new Set(), left_swap_ind: depth_arr.left_ind};
-              let right_context = {array: depth_arr.right_arr, completed: new Set(), left_swap_ind: depth_arr.right_ind};
-              return (
-                <div className="cont">
-                  <div className="thingy">
-                    <ArrayView sortContext={depth_arr} />
-                  </div>
-                  <div className="thingy">
-                    <ArrayView sortContext={left_context} />
-                    <ArrayView sortContext={right_context} />
-                  </div>
-                </div>
-              );
-            }
-            else
-            {
-              return (
-                <div className="cont">
-                  <div className="thingy">
-                    <ArrayView sortContext={depth_arr} />
-                  </div>
-                </div>
-              );
-            }
-          })}
-        </div>
-        <button onClick={this.sort_step} className="sort-button"> SORT </button>
-      </div>
-    );
-    */
   }
 }
 

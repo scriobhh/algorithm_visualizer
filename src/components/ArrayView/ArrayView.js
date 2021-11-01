@@ -37,6 +37,7 @@ class ArrayElement extends React.Component
   }
 }
 
+// TODO update ArrayView to use sets of indices instead of individual indices
 class ArrayView extends React.Component
 {
   render()
