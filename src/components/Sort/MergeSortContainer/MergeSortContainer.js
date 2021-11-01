@@ -82,10 +82,6 @@ class MergeSortContainer extends React.Component
 
     this.state.sort_context_stack = [];
 
-    // this.state.sort_coroutine = MergeSort(this.state.arr, 0);
-    // TODO update this so it doesn't cause errors if .next() returns done === true
-    // this.state.sort_context_stack[0] = this.state.sort_coroutine.next().value;
-
     let temp_gen_obj = MergeSort(this.state.arr, 0);
     this.state.func_context = {
       active_func_ref: this.sort_func_wrapper,
@@ -106,7 +102,6 @@ class MergeSortContainer extends React.Component
       let new_context = new_func_context.context.last_return_val;
       let sort_context_stack_copy = [ ...this.state.sort_context_stack ];
       sort_context_stack_copy[new_context.value.depth] = new_context.value;
-      console.log(sort_context_stack_copy);
       if(new_context.value.start_merge)
         this.setState( {merge_flag: true});
       if(new_context.value.finished)
@@ -145,7 +140,7 @@ class MergeSortContainer extends React.Component
         SORT
       </FuncContextButton>
     ];
-    <button onClick={this.sort_step} className="sort-button"> SORT </button>
+    // TODO clean this up
     return (
       <div className="sort-container">
         <div className="array-view-container">
