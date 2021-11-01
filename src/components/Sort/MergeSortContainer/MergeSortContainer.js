@@ -1,6 +1,8 @@
 import {randomize_array} from '../../../util';
 import React from 'react';
 import ArrayView from '../../ArrayView/ArrayView';
+import FuncContextButton from '../../Buttons/FunctionContextButton';
+import ButtonContainer from '../../ButtonContainer/ButtonContainer';
 
 function* MergeSort(arr, depth)
 {
@@ -80,49 +82,70 @@ class MergeSortContainer extends React.Component
 
     this.state.sort_context_stack = [];
 
-    this.state.sort_coroutine = MergeSort(this.state.arr, 0);
+    // this.state.sort_coroutine = MergeSort(this.state.arr, 0);
     // TODO update this so it doesn't cause errors if .next() returns done === true
-    this.state.sort_context_stack[0] = this.state.sort_coroutine.next().value;
-  }
-  sort_step = () => {
-    let temp = this.state.sort_coroutine.next();
-    if (!temp.done)
-    {
-      /*
-      if(!this.state.sort_context_stack[temp.value.depth])
-      {
-        this.state.sort_context_stack[temp.value.depth];
+    // this.state.sort_context_stack[0] = this.state.sort_coroutine.next().value;
+
+    let temp_gen_obj = MergeSort(this.state.arr, 0);
+    this.state.func_context = {
+      active_func_ref: this.sort_func_wrapper,
+      context: {
+        generator_obj: temp_gen_obj,
+        last_return_val: temp_gen_obj.next()
       }
-      */
-      this.state.sort_context_stack[temp.value.depth] = temp.value;
-      //this.state.sort_context_stack[temp.value.depth].push(temp.value);
-      console.log(this.state.sort_context_stack);
-      //this.state.sort_context_stack[temp.value.depth].pop();//ush(temp.value.left_array);
-      //this.state.sort_context_stack[temp.value.depth].pop();//ush(temp.value.right_array);
-      //this.state.sort_context_stack[temp.value.depth].pop();
-      //if(temp.value.depth < this.state.sort_context_stack.length)
-      if(temp.value.start_merge)
-      {
-        this.setState( {merge_flag: true});
-      }
-      if(temp.value.finished)
-      {
-        this.setState( {merge_flag: false});
-        if(temp.value.depth > 0)
-        {
-          this.state.sort_context_stack.splice(-1);
-        }
-      }
-      this.setState( {sort_context_stack: this.state.sort_context_stack} );
     }
+    this.state.sort_context_stack[0] = this.state.func_context.context.last_return_val.value;
+  }
+
+  // TODO update_func_context is duplicated in many containers
+  update_func_context = (new_func_context) => {
+    if(new_func_context.context.last_return_val.done)
+      return;
     else
     {
-      //else
-        // TODO what to do if sort is finished
+      let new_context = new_func_context.context.last_return_val;
+      let sort_context_stack_copy = [ ...this.state.sort_context_stack ];
+      sort_context_stack_copy[new_context.value.depth] = new_context.value;
+      console.log(sort_context_stack_copy);
+      if(new_context.value.start_merge)
+        this.setState( {merge_flag: true});
+      if(new_context.value.finished)
+      {
+        this.setState( {merge_flag: false});
+        if(new_context.value.depth > 0)
+          sort_context_stack_copy.splice(-1);
+      }
+      this.setState( {sort_context_stack: sort_context_stack_copy} );
+
+      this.setState({
+        func_context: {
+          active_func_ref: new_func_context.active_func_ref,
+          context: {
+            generator_obj: new_func_context.context.generator_obj,
+            last_return_val: new_func_context.context.last_return_val
+          }
+        }
+      });
     }
   };
+
+  sort_func_wrapper = () => {
+    return MergeSort();
+  };
+
   render()
   {
+    const button_el_arr = [
+      <FuncContextButton
+        coroutineStepArg={undefined} // arg passed to assignedFunction on each step
+        updateContainerCallback={this.update_func_context}
+        assignedFunction={this.sort_func_wrapper}
+        functionContext={this.state.func_context}
+        isDisabled={false}>
+        SORT
+      </FuncContextButton>
+    ];
+    <button onClick={this.sort_step} className="sort-button"> SORT </button>
     return (
       <div className="sort-container">
         <div className="array-view-container">
@@ -155,7 +178,7 @@ class MergeSortContainer extends React.Component
             }
           })}
         </div>
-        <button onClick={this.sort_step} className="sort-button"> SORT </button>
+        <ButtonContainer buttonElementArr={button_el_arr} />
       </div>
     );
   }
