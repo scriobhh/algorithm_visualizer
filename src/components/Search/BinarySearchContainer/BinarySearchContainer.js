@@ -11,7 +11,7 @@ function* BinarySearch(arr, search_val)
   while(l < r)
   {
     mid = Math.floor(l + (r-l)/2);
-  yield {array: arr, completed: new Set([index_of_search_val]), left_swap_ind: mid};
+  yield {array: arr, completed: new Set([index_of_search_val]), red_set: new Set([mid])};
     if(arr[mid] === search_val)
     {
       break;
@@ -26,7 +26,7 @@ function* BinarySearch(arr, search_val)
     }
   }
   console.log(mid);
-  yield {array: arr, completed: new Set([index_of_search_val]), left_swap_ind: mid};
+  yield {array: arr, completed: new Set([index_of_search_val]), red_set: new Set([mid])};
 }
 
 class BinarySearchContainer extends React.Component

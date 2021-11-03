@@ -33,19 +33,50 @@ function* MergeSort(arr, depth)
   let right_len = arr.length-mid;
   let running_ind = 0;
 
-  yield {start_merge: true, array: arr, completed: new Set(), depth: depth, left_ind: left, right_ind: right, left_arr: left_arr, right_arr: right_arr};
+  yield {
+    start_merge: true,
+    array: arr,
+    completed: new Set(),
+    depth: depth,
+    left_ind: left,
+    right_ind: right,
+    left_arr: left_arr,
+    right_arr: right_arr
+  };
 
   while(left < left_len && right < right_len)
   {
     if(left_arr[left] > right_arr[right])
     {
-      yield {array: arr, left_swap_ind: running_ind, completed: new Set(), depth: depth, left_ind: left, right_ind: right, left_arr: left_arr, right_arr: right_arr};
+      yield {
+        array: arr, 
+        red_set: new Set([running_ind]), 
+        completed: new Set(), 
+        depth: depth, 
+        left_ind: left,     // TODO replace this with color set? (it is used in code further down)
+        right_ind: right,// TODO replace this with color set? (it is used in code further down) 
+        blue_set: new Set([left]),
+        black_set: new Set([right]),
+        left_arr: left_arr, 
+        right_arr: right_arr
+      };
       arr[running_ind] = right_arr[right];
       right++;
     }
     else
     {
-      yield {array: arr, left_swap_ind: running_ind, completed: new Set(), depth: depth, left_ind: left, right_ind: right, left_arr: left_arr, right_arr: right_arr};
+      yield {
+        array: arr, 
+        red_set: new Set([running_ind]), 
+        completed: new Set(), 
+        depth: depth, 
+        left_ind: left,// TODO replace this with color set? (it is used in code further down) 
+        right_ind: right,// TODO replace this with color set? (it is used in code further down) 
+        blue_set: new Set([left]),
+        black_set: new Set([right]),
+        left_arr: left_arr, 
+        right_arr: right_arr
+      };
       arr[running_ind] = left_arr[left];
       left++;
     }
@@ -53,19 +84,57 @@ function* MergeSort(arr, depth)
   }
   while(left < left_len)
   {
-    yield {array: arr, left_swap_ind: running_ind, completed: new Set(), depth: depth, left_ind: left, right_ind: right, left_arr: left_arr, right_arr: right_arr};
+    yield {
+      array: arr, 
+      red_set: new Set([running_ind]), 
+      completed: new Set(), 
+      depth: depth, 
+      left_ind: left,// TODO replace this with color set? (it is used in code further down) 
+      right_ind: right,// TODO replace this with color set? (it is used in code further down) 
+      blue_set: new Set([left]),
+      black_set: new Set([right]),
+      left_arr: left_arr, 
+      right_arr: right_arr
+    };
     arr[running_ind] = left_arr[left];
     running_ind++; left++;
   }
   while(right<right_len)
   {
-    yield {array: arr, left_swap_ind: running_ind, completed: new Set(), depth: depth, left_ind: left, right_ind: right, left_arr: left_arr, right_arr: right_arr};
+    yield {
+      array: arr, 
+      red_set: new Set([running_ind]), 
+      completed: new Set(), 
+      depth: depth, 
+      left_ind: left,// TODO replace this with color set? (it is used in code further down) 
+      right_ind: right,// TODO replace this with color set? (it is used in code further down) 
+      blue_set: new Set([left]),
+      black_set: new Set([right]),
+      left_arr: left_arr, 
+      right_arr: right_arr
+    };
     arr[running_ind] = right_arr[right];
     running_ind++; right++;
   }
-  yield {array: arr, left_swap_ind: running_ind, completed: new Set(), depth: depth, left_ind: left, right_ind: right, left_arr: left_arr, right_arr: right_arr};
+  yield {
+    array: arr, 
+    red_set: new Set([running_ind]), 
+    completed: new Set(), 
+    depth: depth, 
+    left_ind: left,// TODO replace this with color set? (it is used in code further down) 
+    right_ind: right,// TODO replace this with color set? (it is used in code further down) 
+    blue_set: new Set([left]),
+    black_set: new Set([right]),
+    left_arr: left_arr, 
+    right_arr: right_arr
+  };
   // TODO the depth+1
-  yield {finished: true, array: arr, completed: new Set(), depth: depth};
+  yield {
+    finished: true, 
+    array: arr, 
+    completed: new Set(), 
+    depth: depth
+  };
 }
 
 class MergeSortContainer extends React.Component
@@ -147,8 +216,8 @@ class MergeSortContainer extends React.Component
           {this.state.sort_context_stack.map((depth_arr, depth_index) => {
             if(this.state.merge_flag && (depth_index === this.state.sort_context_stack.length-1))
             {
-              let left_context = {array: depth_arr.left_arr, completed: new Set(), left_swap_ind: depth_arr.left_ind};
-              let right_context = {array: depth_arr.right_arr, completed: new Set(), left_swap_ind: depth_arr.right_ind};
+              let left_context = {array: depth_arr.left_arr, completed: new Set(), red_set: new Set([depth_arr.left_ind])};
+              let right_context = {array: depth_arr.right_arr, completed: new Set(), red_set: new Set([depth_arr.right_ind])};
               return (
                 <div className="cont">
                   <div className="thingy">

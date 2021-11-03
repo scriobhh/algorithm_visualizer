@@ -9,7 +9,7 @@ function* LinearSearch(arr, search_val)
   let index_of_search_val = get_arr_index_of_val(arr, search_val);
   for(let i=0; i<arr.length; i++)
   {
-    yield {array: arr, completed: new Set([index_of_search_val]), left_swap_ind: i};
+    yield {array: arr, completed: new Set([index_of_search_val]), red_set: new Set([i])};
     if(arr[i] === search_val)
     {
       found_flag = true;
@@ -17,7 +17,7 @@ function* LinearSearch(arr, search_val)
       break;
     }
   }
-  yield {array: arr, completed: new Set([index_of_search_val]), left_swap_ind: found_ind};
+  yield {array: arr, completed: new Set([index_of_search_val]), red_set: new Set([found_ind])};
 }
 
 class LinearSearchContainer extends React.Component

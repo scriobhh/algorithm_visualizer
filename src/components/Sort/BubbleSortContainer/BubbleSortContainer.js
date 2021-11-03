@@ -17,8 +17,8 @@ function* BubbleSort(arr)
       completed_set.add(last_sorted_el+1);
       yield {
         array: arr.slice(),
-        left_swap_ind: left,
-        right_swap_ind: right,
+        red_set: new Set([left]),
+        blue_set: new Set([right]),
         completed: completed_set,
       };
       if(arr[left] > arr[right])
@@ -27,8 +27,8 @@ function* BubbleSort(arr)
         no_swaps = false;
         yield {
           array: arr.slice(),
-          right_just_swapped_ind: left,
-          left_just_swapped_ind: right,
+          black_set: new Set([left]),
+          green_set: new Set([right]),
           completed: completed_set,
         };
       }
