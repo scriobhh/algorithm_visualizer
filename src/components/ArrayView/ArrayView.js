@@ -1,24 +1,6 @@
 import './ArrayView.css';
 import React from 'react';
 
-// TODO add legend or icons over important elements e.g. 'pivot' 'i' 'j' etc.
-// TODO put numbers under or at bottom of gray blocks
-// TODO change grey blocks height based on the number
-
-/*
-sortContext:
-{
-  array
-  curr_ind
-  prev_ind
-  swap_indexes  // set
-  just_swapped_indexes  // set
-  pivot
-  current_sub_arr // set
-  completed // set
-}
-*/
-
 class ArrayElement extends React.Component
 {
   render()
@@ -27,7 +9,7 @@ class ArrayElement extends React.Component
     // TODO the element height calculation is hard-coded to only work if there is 10 elements, fix this
     return (
       <div className='element-container'>
-        <div className={'array-element' + this.props.class_str} style={ {height: (this.props.height*10).toString()+'%'} }>
+        <div className={'array-element ' + this.props.class_str} style={ {height: (this.props.height*10).toString()+'%'} }>
         </div>
         <div>
           {this.props.children}
@@ -45,6 +27,7 @@ class ArrayView extends React.Component
     return (
       <div className="array-view">
         {this.props.sortContext.array.map((num, index) => {
+          /*
           let class_str=''; //'array-element';
           if(index === this.props.sortContext.left_swap_ind || index === this.props.sortContext.right_swap_ind)
           {
@@ -58,6 +41,22 @@ class ArrayView extends React.Component
           {
             class_str += ' completed';
           }
+          */
+          const context = this.props.sortContext;
+          let class_str = 'default-list-node';
+          if(context.red_set && context.red_set.has(index))
+            class_str = 'red-list-node';
+          if(context.blue_set && context.blue_set.has(index))
+            class_str = 'blue-list-node';
+          if(context.green_set && context.green_set.has(index))
+            class_str = 'green-list-node';
+          if(context.black_set && context.black_set.has(index))
+            class_str = 'black-list-node';
+          if(context.purple_set && context.purple_set.has(index))
+            class_str = 'purple-list-node';
+          if(context.completed && context.completed.has(index))
+            class_str = 'lightblue-list-node';
+          
           return <ArrayElement key={index} class_str={class_str} height={num}>{num}</ArrayElement>
         })}
       </div>

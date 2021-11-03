@@ -303,6 +303,18 @@
   background-color: green;
 }
 
+.black-list-node {
+  background-color: black;
+}
+
+.purple-list-node {
+  background-color: blueviolet;
+}
+
+.lightblue-list-node {
+  background-color: aqua;
+}
+
 /* ------------------------------------------------------------ */
 
 
