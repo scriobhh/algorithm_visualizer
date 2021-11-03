@@ -35,14 +35,7 @@ function extract_digit(num, digit)
   return Math.floor(extracted_digit);
 }
 
-// TODO to make tracking swaps in the array easier
-// maybe clone arr into output_arr at start of this function????
-// then yield output_arr in the 3rd for-loop
-// NOTE this works, react just complains right now because it doesn't yield the right stuff
-// TODO update this and RadixSort so that they yield, countint_sort was written as a normal function, not a generator
-// TODO add display of count_arr to the radix sort page
-// do something like this 'yield {array: arr, count_array: count_arr, current_digit: digit, completed: new Set()}'
-// TODO make some sort of tree view, then implement AVL tree
+// TODO add colors to the array elements
 function* counting_sort(arr, digit)
 {
   let len = arr.length;
@@ -80,7 +73,6 @@ function* RadixSort(arr)
 {
   let max_num = get_max(arr);
   let max_digits = get_digit_count(max_num);
-
 
   for(let digit=0; digit<max_digits; digit++)
   {

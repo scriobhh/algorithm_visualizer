@@ -18,17 +18,17 @@ function* QuickSort(arr, l, r)
   let swap_index=l;
   for(let i=l; i <= pivot_index; i++)
   {
-    yield {array: arr, completed: new Set(), left_swap_ind: i, right_swap_ind: swap_index, left_just_swapped_ind: pivot_index};
+    yield {array: arr, completed: new Set(), red_set: new Set([i]), blue_set: new Set([swap_index]), black_set: new Set([pivot_index])};
     if(arr[i] < pivot_val)
     {
       swap(arr, i, swap_index);
       swap_index++;
-      yield {array: arr, completed: new Set(), left_swap_ind: i, right_swap_ind: swap_index, left_just_swapped_ind: pivot_index};
+      yield {array: arr, completed: new Set(), red_set: new Set([i]), blue_set: new Set([swap_index]), black_set: new Set([pivot_index])};
     }
   }
-  yield {array: arr, completed: new Set(), left_swap_ind: pivot_index, right_swap_ind: swap_index};
+  yield {array: arr, completed: new Set(), red_set: new Set([pivot_index]), blue_set: new Set([swap_index])};
   swap(arr, pivot_index, swap_index);
-  yield {array: arr, completed: new Set(), left_just_swapped_ind: pivot_index, right_just_swapped_ind: swap_index};
+  yield {array: arr, completed: new Set(), black_set: new Set([pivot_index]), purple_set: new Set([swap_index])};
 
   let it_left = QuickSort(arr, l, swap_index);
   let ob =it_left.next(); 
