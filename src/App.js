@@ -15,6 +15,9 @@ import BubbleSortContainer from './components/Sort/BubbleSortContainer/BubbleSor
 // randomize list
 //randomize_array(nums);
 
+// TODO stop graph view from rendering twice when you open a GraphView based algo
+// TODO cleanup css and maybe move to styled-components or css modules
+
 // TODO sort_gen is replaced with specific sort function
 // MainWindow gets passed a sort function
 // MainWindow initializes or chooses the array-container based on the sort function
