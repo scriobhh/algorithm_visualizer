@@ -150,23 +150,23 @@
 }
 
 .red-circle {
-  stroke: rgb(173, 0, 130); /* outer color of circle*/
-  fill: rgb(255, 115, 115); /* inner color of circle */
+  stroke: rgb(173, 0, 130);
+  fill: rgb(255, 115, 115);
 }
 
 .blue-circle {
-  stroke: rgb(173, 0, 130); /* outer color of circle*/
-  fill: rgb(100, 115, 255); /* inner color of circle */
+  stroke: rgb(173, 0, 130);
+  fill: rgb(100, 115, 255);
 }
 
 .green-circle {
-  stroke: rgb(173, 0, 130); /* outer color of circle*/
-  fill: rgb(72, 255, 87); /* inner color of circle */
+  stroke: rgb(173, 0, 130);
+  fill: rgb(72, 255, 87);
 }
 
 .dark-blue-circle {
-  stroke: rgb(173, 0, 130); /* outer color of circle*/
-  fill: rgb(0, 25, 250); /* inner color of circle */
+  stroke: rgb(173, 0, 130);
+  fill: rgb(0, 25, 250);
 }
 
 .val-container {
