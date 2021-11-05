@@ -1,22 +1,11 @@
-//import BubbleSortContainer from '../Sort/BubbleSortContainer/BubbleSortContainer';
-// import logo from './logo.svg';
 import './App.css';
 import SideBar from './components/SideBar/SideBar';
-//import {BubbleSortContainer} from './components/SortContainer/SortContainer.js';
-//import {BubbleSort} from './sort_functions';
 import React from 'react';
 import BubbleSortContainer from './components/Sort/BubbleSortContainer/BubbleSortContainer';
 
-// TODO functionality for passing data from sidebar to MainWindow goes here
-// use SideBar to select which MainWindow component to display
-// right now it is hardcoded to display bubble sort container
-
-//let nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-// randomize list
-//randomize_array(nums);
-
 // TODO stop graph view from rendering twice when you open a GraphView based algo
 // TODO cleanup css and maybe move to styled-components or css modules
+// TODO cleanup file structure
 
 // TODO sort_gen is replaced with specific sort function
 // MainWindow gets passed a sort function
@@ -31,20 +20,6 @@ import BubbleSortContainer from './components/Sort/BubbleSortContainer/BubbleSor
 
 // NOTE react doesn't seem to like when you re-order things in place...
 // re-orderings should be done by creating a new array and returning it, then setting the component state to the new array with setState()
-
-//mainwindow -> sortcontainer -> arraycontainer
-
-/* 
-function* sort_gen(arr)
-{
-  while(true)
-  {
-    randomize_array(arr);
-    console.log('ITERATOR');
-    yield arr.slice();
-  }
-}
-*/
 
 // TODO binary tree view and graph view use 2 completely different approaches for drawing a bunch of vertices on screen
 // binary trees uses HTML elements to contain nodes and uses css & html to arrange the elements
