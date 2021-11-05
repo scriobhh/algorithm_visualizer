@@ -155,21 +155,9 @@ class RadixSortContainer extends React.Component
       return (
         <div className="sort-container">
           <div className="array-view-container">
-            <div className="cont">
-              <div className="thingy">
-                <ArrayView sortContext={func_context} />
-              </div>
-            </div>
-            <div className="cont">
-              <div className="thingy">
-                <ArrayView sortContext={{array: func_context.count_array, completed: new Set()}} />
-              </div>
-            </div>
-            <div className="cont">
-              <div className="thingy">
-                <ArrayView sortContext={{array: func_context.output_arr, completed: new Set()}} />
-              </div>
-            </div>
+              <ArrayView sortContext={func_context} />
+              <ArrayView sortContext={{array: func_context.count_array, completed: new Set()}} />
+              <ArrayView sortContext={{array: func_context.output_arr, completed: new Set()}} />
           </div>
           <ButtonContainer buttonElementArr={button_el_arr} />
         </div>
@@ -180,11 +168,7 @@ class RadixSortContainer extends React.Component
       return (
         <div className="sort-container">
           <div className="array-view-container">
-            <div className="cont">
-              <div className="thingy">
-                <ArrayView sortContext={func_context} />
-              </div>
-            </div>
+            <ArrayView sortContext={func_context} />
           </div>
           <ButtonContainer buttonElementArr={button_el_arr} />
         </div>

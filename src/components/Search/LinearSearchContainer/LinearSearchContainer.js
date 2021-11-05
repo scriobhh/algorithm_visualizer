@@ -43,11 +43,7 @@ class LinearSearchContainer extends React.Component
     return (
       <div className="sort-container">
         <div className="array-view-container">
-          <div className="cont">
-            <div className="thingy">
-              <ArrayView sortContext={this.state.func_context} />
-            </div>
-          </div>
+          <ArrayView sortContext={this.state.func_context} />
         </div>
         <button onClick={this.sort_step} className="sort-button"> SORT </button>
       </div>

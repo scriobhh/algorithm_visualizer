@@ -105,11 +105,7 @@ class BubbleSortContainer extends React.Component
     return (
       <div className="sort-container">
         <div className="array-view-container">
-          <div className="cont">
-            <div className="thingy">
-              <ArrayView sortContext={this.state.func_context.context.last_return_val.value} />
-            </div>
-          </div>
+            <ArrayView sortContext={this.state.func_context.context.last_return_val.value} />
         </div>
         <ButtonContainer buttonElementArr={button_el_arr} />
       </div>

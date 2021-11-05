@@ -27,21 +27,6 @@ class ArrayView extends React.Component
     return (
       <div className="array-view">
         {this.props.sortContext.array.map((num, index) => {
-          /*
-          let class_str=''; //'array-element';
-          if(index === this.props.sortContext.left_swap_ind || index === this.props.sortContext.right_swap_ind)
-          {
-            class_str += ' swap-ind';
-          }
-          if(index === this.props.sortContext.right_just_swapped_ind || index === this.props.sortContext.left_just_swapped_ind)
-          {
-            class_str += ' just-swapped-ind';
-          }
-          if(this.props.sortContext.completed.has(index))
-          {
-            class_str += ' completed';
-          }
-          */
           const context = this.props.sortContext;
           let class_str = 'default-list-node';
           if(context.red_set && context.red_set.has(index))

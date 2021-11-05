@@ -219,11 +219,11 @@ class MergeSortContainer extends React.Component
               let left_context = {array: depth_arr.left_arr, completed: new Set(), red_set: new Set([depth_arr.left_ind])};
               let right_context = {array: depth_arr.right_arr, completed: new Set(), red_set: new Set([depth_arr.right_ind])};
               return (
-                <div className="cont">
-                  <div className="thingy">
+                <div className="flex-vertical-container">
+                  <div className="flex-horizontal-container">
                     <ArrayView sortContext={depth_arr} />
                   </div>
-                  <div className="thingy">
+                  <div className="flex-horizontal-container">
                     <ArrayView sortContext={left_context} />
                     <ArrayView sortContext={right_context} />
                   </div>
@@ -233,8 +233,8 @@ class MergeSortContainer extends React.Component
             else
             {
               return (
-                <div className="cont">
-                  <div className="thingy">
+                <div className="flex-vertical-container">
+                  <div className="flex-horizontal-container">
                     <ArrayView sortContext={depth_arr} />
                   </div>
                 </div>
