@@ -64,7 +64,7 @@ while(!ob.done) { yield ob.value; ob = it.next(); }
 */
 // TODO and see the _step functions in Tree code
 
-// TODO lots of re-use of css e.g. list-container, sort-container, tree-container
+// TODO lots of re-use of css e.g. list-container, algo-container, tree-container
 // TODO re-think hte file structure, lots of nested files that are maybe uncessary
 // TODO consider making things like the sort containers and button containers their own react component
 // TODO there are many components that are class componenets when they should probably just be function components

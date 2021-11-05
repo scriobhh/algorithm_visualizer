@@ -49,7 +49,7 @@ class BinarySearchContainer extends React.Component
   render()
   {
     return (
-      <div className="sort-container">
+      <div className="algo-container">
         <div className="array-view-container">
           <ArrayView sortContext={this.state.func_context} />
         </div>

@@ -348,7 +348,7 @@ class BinarySearchTree extends React.Component
       </TextInputButton2>,
     ];
     return (
-      <div className='sort-container'>
+      <div className='algo-container'>
         <BinaryTreeView tree={this.state.tree} context={this.state.func_context.context.last_return_val == null ? this.state.func_context.context.last_return_val : this.state.func_context.context.last_return_val.value} />
         <ButtonContainer buttonElementArr={button_el_arr} />
       </div>

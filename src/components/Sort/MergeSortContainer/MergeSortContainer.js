@@ -211,7 +211,7 @@ class MergeSortContainer extends React.Component
     ];
     // TODO clean this up
     return (
-      <div className="sort-container">
+      <div className="algo-container">
         <div className="array-view-container">
           {this.state.sort_context_stack.map((depth_arr, depth_index) => {
             if(this.state.merge_flag && (depth_index === this.state.sort_context_stack.length-1))

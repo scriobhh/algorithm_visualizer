@@ -153,7 +153,7 @@ class RadixSortContainer extends React.Component
     if(func_context.count_array)
     {
       return (
-        <div className="sort-container">
+        <div className="algo-container">
           <div className="array-view-container">
               <ArrayView sortContext={func_context} />
               <ArrayView sortContext={{array: func_context.count_array, completed: new Set()}} />
@@ -166,7 +166,7 @@ class RadixSortContainer extends React.Component
     else
     {
       return (
-        <div className="sort-container">
+        <div className="algo-container">
           <div className="array-view-container">
             <ArrayView sortContext={func_context} />
           </div>

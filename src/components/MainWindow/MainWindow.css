@@ -1,6 +1,6 @@
 /* 
     TODO there is a reasonable amount of duplication here
-    e.g. tree-container, list-container, sort-container
+    e.g. tree-container, list-container, algo-container
 */
 
 .main-window {
@@ -10,14 +10,14 @@
 
   grid-template-areas:
   " . . . "
-  " . sort-container . "
+  " . algo-container . "
   " . . . ";
   grid-template-columns: auto 90% auto;
   grid-template-rows: auto 90% auto;
 }
 
-.sort-container {
-  grid-area: sort-container;
+.algo-container {
+  grid-area: algo-container;
 
   width: 100%;
   height: 100%;

@@ -178,7 +178,7 @@ function GraphView(props)
   useEffect(() => {
     console.log('UPDATED');
     const el = document.getElementsByClassName('graph-view')[0];
-    const node_el = document.getElementsByClassName('sort-container')[0];
+    const node_el = document.getElementsByClassName('algo-container')[0];
     setWidth(el.clientWidth);
     setHeight(el.clientHeight);
     setNodeWidth(node_el.clientWidth);

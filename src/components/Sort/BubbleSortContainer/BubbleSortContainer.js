@@ -103,7 +103,7 @@ class BubbleSortContainer extends React.Component
       </FuncContextButton>,
     ];
     return (
-      <div className="sort-container">
+      <div className="algo-container">
         <div className="array-view-container">
             <ArrayView sortContext={this.state.func_context.context.last_return_val.value} />
         </div>
