@@ -285,7 +285,7 @@ class GraphContainer extends React.Component
       </TextInputButton2>
     ];
     return (
-      <div className='tree-container'>
+      <div className='sort-container'>
         <GraphView graphObj={this.state.graph} context={this.state.func_context.context.last_return_val == null ? this.state.func_context.context.last_return_val : this.state.func_context.context.last_return_val.value}/>
         <ButtonContainer buttonElementArr={button_el_arr} />
       </div>

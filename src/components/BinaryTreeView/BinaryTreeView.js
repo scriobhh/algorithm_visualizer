@@ -38,7 +38,7 @@ function BinaryTreeView(props)
   let [nodeWidth, setNodeWidth] = useState(0);
   useEffect(() => {
     console.log('UPDATED');
-    const el = document.getElementsByClassName('tree-container')[0];
+    const el = document.getElementsByClassName('sort-container')[0];
     const node_el = document.getElementsByClassName('node-container')[0];
     setWidth(el.clientWidth);
     setHeight(el.clientHeight);

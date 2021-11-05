@@ -86,8 +86,6 @@ while(!ob.done) { yield ob.value; ob = it.next(); }
 
 function MainWindow(props)
 {
-    console.log('MAINWINDOW');
-    //this.setState( {component: this.state.component} );
     return (
       <div className="main-window">
         {props.children}

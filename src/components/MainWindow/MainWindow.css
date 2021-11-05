@@ -62,26 +62,8 @@
 
 /* ------------------------------------------------------------ */
 
-.tree-container {
-  grid-area: sort-container;
-
-  width: 100%;
-  height: 100%;
-  background-color: lightcyan;
-
-  display: grid;
-  grid-template-areas:
-  " .        .       . "
-  " . node-container . "
-  " .        .       . "
-  " .   button-container  . "
-  " .        .       . ";
-  grid-template-columns: 5% auto 5%;
-  grid-template-rows: 5% auto 5% 10% 5%;
-}
-
 .binary-tree-view-container{
-  grid-area: node-container;
+  grid-area: view-container;
   width: 100%;
   height: 100%;
 
@@ -232,7 +214,7 @@
 /* ------------------------------------------------------------ */
 
 .linked-list {
-  grid-area: node-container;
+  grid-area: view-container;
   display: flex;
   justify-content: space-evenly;
   width: 100%;
@@ -310,7 +292,7 @@
 /* ------------------------------------------------------------ */
 
 .graph-view-container {
-  grid-area: node-container;
+  grid-area: view-container;
   background-color: green;
   /*position: relative;*/
   display: flex;

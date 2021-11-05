@@ -72,32 +72,6 @@ function heapify_entire_tree(root)
     heapify_entire_tree(root.right);
 }
 
-/*
-function* heapify_entire_tree(root)
-{
-  if(!root) return;
-
-  // pre-order traversal
-  // ----
-  let it = heapify_entire_tree(root.left);
-  let ob = it.next();
-  while(!ob.done) { yield ob.value; ob = it.next(); }
-  // ----
-  it = heapify_entire_tree(root.right);
-  ob = it.next();
-  while(!ob.done) { yield ob.value; ob = it.next(); }
-  // ----
-
-  yield {blue_node_set: new Set([root.val])};
-  // ----
-  it = heapify(root);
-  ob = it.next();
-  while(!ob.done) { yield ob.value; ob = it.next(); }
-  // ----
-  yield {blue_node_set: new Set([root.val])};
-}
-*/
-
 function* insert(val, tree)
 {
   let queue = [];
@@ -201,7 +175,7 @@ class HeapContainer extends React.Component
       </TextInputButton2>,
     ];
     return (
-      <div className='tree-container'>
+      <div className='sort-container'>
         <BinaryTreeView tree={this.state.tree} context={this.state.func_context.context.last_return_val == null ? this.state.func_context.context.last_return_val : this.state.func_context.context.last_return_val.value}/>
         <ButtonContainer buttonElementArr={button_el_arr} />
       </div>

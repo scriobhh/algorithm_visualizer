@@ -171,13 +171,14 @@ function GraphView(props)
   let normalized_node_coords_map = {};
   populate_normalized_coords(node_list, 0.5, 0.5, 0.5, normalized_node_coords_map);  // normalized from -1 to 1 (inclusive)
 
+  // TODO this causes the graph view to get rendered twice
   let [width, setWidth] = useState(0);
   let [height, setHeight] = useState(0);
   let [nodeWidth, setNodeWidth] = useState(0);
   useEffect(() => {
     console.log('UPDATED');
     const el = document.getElementsByClassName('graph-view')[0];
-    const node_el = document.getElementsByClassName('tree-container')[0];
+    const node_el = document.getElementsByClassName('sort-container')[0];
     setWidth(el.clientWidth);
     setHeight(el.clientHeight);
     setNodeWidth(node_el.clientWidth);
