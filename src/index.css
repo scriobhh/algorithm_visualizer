@@ -11,3 +11,307 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* ------------------------------------------------------------ */
+
+/* 
+    TODO there is a reasonable amount of duplication here
+    e.g. tree-container, list-container, algo-container
+*/
+
+.algo-container {
+  width: 100%;
+  height: 100%;
+  background-color: lightcyan;
+
+  display: grid;
+  grid-template-areas:
+  " .         .            ."
+  " . view-container . "
+  " .         .            . "
+  " .    button-container       . "
+  " .         .            . ";
+  grid-template-columns: auto 90% auto;
+  grid-template-rows: 5% auto 5% 10% 5%;
+}
+
+.array-view-container {
+  grid-area: view-container;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.flex-vertical-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+}
+
+.flex-horizontal-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+}
+
+/* TODO is this used anywhere? */
+.sort-button {
+  grid-area: button-container;
+}
+
+/* ------------------------------------------------------------ */
+
+.binary-tree-view-container{
+  grid-area: view-container;
+  width: 100%;
+  height: 100%;
+
+  background-color: red;
+
+  position: relative;
+}
+
+.node{
+  grid-area: val;
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 100%;
+  background-color: aquamarine;
+}
+
+.node-container{
+  position: relative;
+  width: 50px;
+  height: 50px;
+}
+
+.left-child-node{
+  grid-area: left-child;
+  display: flex;
+
+  /* border-style: solid; */
+
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 100%;
+  /* background-color: red; */
+}
+
+.right-child-node{
+  grid-area: right-child;
+  display: flex;
+
+  /* border-style: solid; */
+
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 100%;
+  /* background-color: blue; */
+}
+
+.line-container {
+  /*background-color: green;*/
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0%;
+  left: 0%
+}
+
+.svg-line {
+  stroke: black;
+  stroke-width: 4px;
+}
+
+.node-circle {
+  position: absolute;
+  
+  top: 0px;/*50%;*/
+  left: 0px;/*50%;*/
+
+  width: 100%;
+  height: 100%;
+
+  z-index: 1;
+}
+
+.default-circle {
+  stroke: rgb(173, 0, 130); /* outer color of circle*/
+  fill: rgb(204, 204, 204); /* inner color of circle */
+}
+
+.red-circle {
+  stroke: rgb(173, 0, 130);
+  fill: rgb(255, 115, 115);
+}
+
+.blue-circle {
+  stroke: rgb(173, 0, 130);
+  fill: rgb(100, 115, 255);
+}
+
+.green-circle {
+  stroke: rgb(173, 0, 130);
+  fill: rgb(72, 255, 87);
+}
+
+.dark-blue-circle {
+  stroke: rgb(173, 0, 130);
+  fill: rgb(0, 25, 250);
+}
+
+.val-container {
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ------------------------------------------------------------ */
+
+.button-container {
+  grid-area: button-container;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: brown;
+}
+
+.button-container > button {
+  width: 100%;
+  height: 100%;
+}
+
+.func-context-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.text-input-button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.text-input-button-container > textarea {
+  resize: none;
+}
+
+/* ------------------------------------------------------------ */
+
+.linked-list {
+  grid-area: view-container;
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  height: 100%;
+  background-color: green;
+  position: relative;
+}
+
+.linked-list > .list-node-container {
+  background-color: blanchedalmond;
+  width: 100%;
+  height: 100%;
+  border-style: solid;
+  border-color: black;
+  /*position: relative;*/
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+#z-test{
+  z-index: 999;
+}
+
+.list-node {
+  background-color: grey;
+  border-style: solid;
+  border-color: black;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+}
+
+.val-box {
+  width: 100%;
+  height: 100%;
+  border-style: solid;
+}
+
+.line-box {
+  width: 100%;
+  height: 100%;
+}
+
+.default-list-node {
+  background-color: grey;
+}
+
+.red-list-node {
+  background-color: red;
+}
+
+.blue-list-node {
+  background-color: blue;
+}
+
+.green-list-node {
+  background-color: green;
+}
+
+.black-list-node {
+  background-color: black;
+}
+
+.purple-list-node {
+  background-color: blueviolet;
+}
+
+.lightblue-list-node {
+  background-color: aqua;
+}
+
+/* ------------------------------------------------------------ */
+
+.graph-view-container {
+  grid-area: view-container;
+  background-color: green;
+  /*position: relative;*/
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.graph-view{
+  width: 80%;
+  height: 80%;
+  position: relative;
+  background-color: greenyellow;
+}
+
+.vertex{
+  position: absolute;
+}
+
+/* ------------------------------------------------------------ */
